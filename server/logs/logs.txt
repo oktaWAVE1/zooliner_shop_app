@@ -90,3 +90,4 @@
 13.02.2024, 22:33:22 Ошибка: Class constructor model cannot be invoked without 'new' 
 13.02.2024, 22:34:00 Ошибка: Class constructor model cannot be invoked without 'new' 
 13.02.2024, 22:34:23 Ошибка: Class constructor model cannot be invoked without 'new' 
+13.02.2024, 23:43:13 Ошибка: Не авторизован 

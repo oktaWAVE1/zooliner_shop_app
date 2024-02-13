@@ -186,6 +186,10 @@ button:disabled, button:hover:disabled {
     font-size: 0.8rem;
 }
 
+.orderPage {
+    width: 1050px;
+}
+
 .printStockByBrand .printStockByBrandItem{
     display: grid;
     grid-template-columns: 1fr 12fr 1fr 1fr;
@@ -260,9 +264,7 @@ button:disabled, button:hover:disabled {
     transition: all 300ms ease-in-out;
 }
 
-#ProductSearchForm-realization input, #ProductSearchForm-realization select {
 
-}
 
 .realizationTotal .realization {
     border: 1px solid #AAA;
@@ -296,3 +298,14 @@ button:disabled, button:hover:disabled {
     color: white;
     border-color: forestgreen;
 }
+.orderPage .orderHeader{
+    font-weight: 800;
+}
+
+.orderPage .orderHeader, .orderPage .orderItem {
+    display: grid;
+    grid-template-columns: 20px 10fr 2fr 2fr 2fr;
+    border-bottom: 1px solid #777;
+    gap: 8px;
+}
+
