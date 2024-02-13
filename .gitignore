@@ -1,0 +1,5 @@
+server/static
+server/.env
+server/config.js
+server/node_modules
+client/.env

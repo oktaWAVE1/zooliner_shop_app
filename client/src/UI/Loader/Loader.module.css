@@ -1,0 +1,32 @@
+.loader {
+    margin: 50px 0;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@media (max-width: 992px){
+    .loader{
+        position: absolute;
+    }
+}
+.loaderCircle {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    border: 3px dashed #fe5117;
+    animation: rotate 2s infinite ease-in-out;
+    animation-direction: alternate;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg) scale(1);
+    } to {
+              transform: rotate(360deg) scale(1.4);
+          }
+
+}

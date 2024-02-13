@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Exo2, sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+  min-height: 100vh;
+
+}
+
+
+html, body {height: 100%}
+
+html {
+  scroll-behavior: smooth;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+
+@font-face {
+  font-family: "Lobster";
+  src: url("./components/styles/fonts/Lobster-Regular.ttf") format("opentype");
+}
+
+@font-face {
+  font-family: "Exo2";
+  src: url("./components/styles/fonts/Exo2-Regular.ttf") format("opentype");
+}
+
+@font-face {
+  font-family: "Days";
+  src: url("./components/styles/fonts/Days.ttf") format("opentype");
+}

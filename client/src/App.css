@@ -1,0 +1,298 @@
+* {
+    --main-theme-color: #2ea9f7;
+    --main-theme-active-color: #fe5117;
+    --main-theme-text-color: #777777;
+
+    color: var(--main-theme-text-color)
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #00AF00;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 239, 0, 0.6);
+}
+
+.App{
+    max-width: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 100vh;
+    align-items: center;
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+textarea{
+    padding: 6px 6px;
+    border-radius: 6px;
+    border: #777777 solid 1px;
+}
+
+h1 {
+    text-align: center;
+    color: var(--main-theme-text-color);
+    font-family: Exo2;
+
+}
+
+.mainContainer {
+    min-width: 100%;
+    min-height: 90vh;
+}
+
+.mainContainer .loginPage {
+    min-height: 90vh;
+}
+
+button, .myBtn{
+    background: #FFFFFF;
+    border: var(--main-theme-active-color) 1px solid;
+    border-radius: 5px;
+    padding: 10px 66px;
+    color: var(--main-theme-active-color);
+    font-family: Exo2;
+    cursor: pointer;
+    transition: all 250ms linear;
+}
+
+button:hover, .myBtn:hover {
+    background-color: var(--main-theme-active-color);
+    color: #FFFFFF;
+}
+
+button:disabled, button:hover:disabled {
+    color: var(--main-theme-text-color);
+    border-color: var(--main-theme-text-color);
+    background-color: #FFFFFF;
+}
+
+.realizationsBTN, .realizationsPaymentBTN {
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: solid 1px #777777;
+}
+
+.realizationsBTN.true, .realizationsBTN.true:hover {
+    background-color: forestgreen;
+    color: white;
+}
+
+.realizationsPaymentBTN.true, .realizationsPaymentBTN.true:hover{
+    background-color: indianred;
+    color: white;
+}
+.realizationsListHeader {
+    font-weight: 800;
+    margin-top: 15px;
+    margin-left: -22px;
+}
+.realizationsListItem, .realizationsListHeader {
+    width: 1000px;
+    display: grid;
+    grid-template-columns: 4fr 2fr 2fr 3fr 2fr;
+    align-items: center;
+    text-align: center;
+}
+.customerListItem {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 3fr 4fr 3fr;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.barcodeListItem {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 12fr 12fr 5fr 2fr;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    border-bottom: solid #AAA 1px;
+}
+
+.orderListItem {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 2fr 18fr 1fr;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+.realizationsSalesItem {
+    width: 1000px;
+    display: grid;
+    grid-template-columns: 60px auto 80px 40px 80px;
+    word-wrap: normal;
+    gap: 8px;
+    border-bottom: #777777 1px solid;
+}
+
+.realizationsTotal {
+    border-bottom: #777777 solid 1px;
+}
+
+.orderFilters {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: 100%;
+    border-bottom: #DDD 1px solid;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+    border-color: rgba(0,0,0,.125);
+}
+
+.accordion-header:hover div, .accordion-header:hover div b {
+    color: white;
+
+}
+
+.del_btn {
+    cursor: pointer;
+    color: var(--main-theme-active-color);
+}
+
+.priceTagToPrintList {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    width: 1500px;
+}
+
+.priceTagItem {
+    border-left: #000000 solid 1px;
+    border-top: #000000 solid 1px;
+    padding: 5px 5px;
+}
+.priceTagItem .priceTagTitle {
+    line-height: 1.1rem;
+    font-size: 0.9rem;
+    color: #343a40;
+    font-weight: 600;
+}
+
+.priceTagItem small {
+    font-size: 0.8rem;
+}
+
+.printStockByBrand .printStockByBrandItem{
+    display: grid;
+    grid-template-columns: 1fr 12fr 1fr 1fr;
+    width: 1050px;
+}
+.printStockByBrand .printStockByBrandItem div {
+    border: solid 1px #999;
+    padding: 2px 5px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color: #333;
+}
+
+.realizationListItem, .realizationListHeader {
+    display: grid;
+    grid-template-columns:  16px 3fr 27fr 3fr 4fr 3fr 3fr;
+    width: 100%;
+    align-items: center;
+    gap: 5px;
+    border-bottom: solid #AAA 1px;
+    padding: 4px 0;
+}
+.realizationListHeader {
+    font-weight: 800;
+}
+
+.realizationListItem .del_btn {
+    padding: 0 3px;
+    border: none;
+}
+
+.realizationListHeader div:nth-child(2),
+.realizationListHeader div:nth-child(4),
+.realizationListHeader div:nth-child(5),
+.realizationListItem div:nth-child(2),
+.realizationListItem div:nth-child(4),
+.realizationListItem div:nth-child(5) {
+    justify-content: center;
+    width: 100%;
+    display: flex;
+}
+.realizationListItem div:nth-child(7),
+.realizationListHeader div:nth-child(7),
+.realizationListItem div:nth-child(6),
+.realizationListHeader div:nth-child(6){
+    justify-content: end;
+    width: 100%;
+    display: flex;
+}
+
+.printStockByBrand .printStockByBrandItem div:nth-child(odd){
+    justify-content: center;
+}
+
+.exceedsLimit {
+    color: red;
+}
+.changeBack.hidden, .expectedWeight.hidden{
+    visibility: hidden;
+    opacity: 0;
+}
+
+.changeBack, .expectedWeight {
+    opacity: 1;
+    visibility: visible;
+    width: 140px;
+    border: #fe5117 1px solid;
+    border-radius: 8px;
+    text-align: center;
+    padding: 4px;
+    transition: all 300ms ease-in-out;
+}
+
+#ProductSearchForm-realization input, #ProductSearchForm-realization select {
+
+}
+
+.realizationTotal .realization {
+    border: 1px solid #AAA;
+    color: #AAA;
+    border-radius: 5px;
+    padding: 10px 12px
+}
+
+.realizationTotal .realization.done{
+    border: 1px solid darkred;
+    background-color: darkred;
+    color: #FFF;
+}
+
+.realizationTotalSums div {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.realizationTotalSums{
+    border-bottom: solid 1px rgba(0,0,0, 0.1)
+}
+.paymentMethod.card {
+    background-color: indianred;
+    color: white;
+    border-color: indianred;
+}
+
+.paymentMethod.cash {
+    background-color: forestgreen;
+    color: white;
+    border-color: forestgreen;
+}
