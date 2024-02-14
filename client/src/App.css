@@ -21,6 +21,12 @@
     align-items: center;
 }
 
+@media print {
+    div {
+        break-inside: avoid;
+    }
+}
+
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
