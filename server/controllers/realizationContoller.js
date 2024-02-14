@@ -180,6 +180,11 @@ class RealizationContoller {
                 include: [
                     {model: SellsRemote, where: {"Код товара": itemId}},
                 ]})
+            console.log(realization)
+            if(realization?.Проведение){
+                return next(ApiError.badRequest("Реализация уже проведена!"))
+            }
+
             if(realization){
                 await SellsRemote.update({Количество: realization.sellsRemotes[0].Количество+1},
                     {where: {"№ реализации": realizationId, "Код товара": itemId}}).then(() => {return res.json("Товар добавлен")})

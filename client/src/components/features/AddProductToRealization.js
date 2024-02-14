@@ -7,7 +7,7 @@ import {Context} from "../../index";
 import {Form} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 
-const AddProductToRealization = ({id, setRefresh, disabled, payment}) => {
+const AddProductToRealization = ({id, setRefresh, disabled, payment, setAlertMessage}) => {
     const navigate = useNavigate()
     const [query, setQuery] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -29,23 +29,33 @@ const AddProductToRealization = ({id, setRefresh, disabled, payment}) => {
                 realizationId: id,
                 barcode: barcode
             }).then((data) => {
-                console.log(data)
+                if(data?.message){
+                    setAlertMessage({title: '', message: data.message, show: true, variant: 'danger'})
+                }
                 setRefresh(prev => prev+1)
                 setBarcode('')
             }).catch(e => {
-                console.log(e)
+                setAlertMessage({title: '', message: e.message, show: true, variant: 'danger'})
             })
         }
     }
     if (isLoading) return <Loader />
     const addItemSearch = async () => {
-        await addNewRealizationItem({
-            realizationId: id,
-            itemId: productId
-        }).then(() => {
-            setRefresh(prev => prev+1)
-            setProductId(0)
-        })
+        try {
+            await addNewRealizationItem({
+                realizationId: id,
+                itemId: productId
+            }).then((data) => {
+                if(data?.message){
+                    setAlertMessage({title: '', message: data.message, show: true, variant: 'danger'})
+                }
+                setRefresh(prev => prev+1)
+                setProductId(0)
+            })
+        } catch (e) {
+            console.log(e)
+            setAlertMessage({title: '', message: e.message, show: true, variant: 'danger'})
+        }
     }
     return (
         <div>

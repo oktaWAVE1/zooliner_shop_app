@@ -5,9 +5,8 @@ import useDebounce from "../../hooks/useDebounce";
 const CashboxModal = ({show, onHide, cardTotal, cashTotal, deliveryCardTotal, deliveryCashTotal}) => {
     const [moneyFact, setMoneyFact] = useState({cashFinish: 0, cardFinish: 0, deliveryCash: 0, deliveryCard: 0, online: 0, suppliers: 0});
     const [morningCash, setMorningCash] = useState(0);
-    // const cashDifference = -(cashTotal - Number(morningCash)  + moneyFact.deliveryCash + moneyFact.suppliers + moneyFact.online + moneyFact.cashFinish)
-    const cashDifference = (Number(moneyFact.cashFinish) -Number(cashTotal) - Number(morningCash) + Number(moneyFact.deliveryCash) + Number(moneyFact.suppliers) + Number(moneyFact.online))
-    const cardDifference = (Number(moneyFact.cardFinish) + Number(moneyFact.deliveryCard) - Number(cardTotal))
+    const cashDifference = Math.round(Number(moneyFact.cashFinish) -Number(cashTotal) - Number(morningCash) + Number(moneyFact.deliveryCash) + Number(moneyFact.suppliers) + Number(moneyFact.online))
+    const cardDifference = Math.round(Number(moneyFact.cardFinish) + Number(moneyFact.deliveryCard) - Number(cardTotal))
     useDebounce(() => {
         setMoneyFact({...moneyFact, deliveryCash: deliveryCashTotal, deliveryCard: deliveryCardTotal})
     }, 50, [deliveryCashTotal, deliveryCashTotal, show])

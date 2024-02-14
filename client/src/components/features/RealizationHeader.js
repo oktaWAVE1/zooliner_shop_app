@@ -124,7 +124,7 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
                     <RealizationDiscountFeature setRefresh={setRefresh} id={id} discount={discount} setDiscount={setDiscount} />
                 </div>
                 <div className="w-50">
-                    <AddProductToRealization payment={paymentMethod} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} />
+                    <AddProductToRealization setAlertMessage={setAlertMessage} payment={paymentMethod} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} />
                 </div>
             </div>
             <RealizationTotalFeature date={date} setExtraProducts={setExtraProducts} setAlertMessage={setAlertMessage} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} realizationDone={realizations.currentRealization.Проведение} total={total} discount={realizations.currentRealization.discount} delivery={deliveryCost} />
