@@ -18,6 +18,7 @@ const PriceTagNewItem = observer(() => {
             loading.setRefresh(prev => prev+1)
         })
     }
+
     const addTag = async () => {
         loading.setLoading(true)
         await addPriceTag({Код: productId}).then(() => {
@@ -33,8 +34,10 @@ const PriceTagNewItem = observer(() => {
                 <Link to={'/print/price-tags'} target="_blank"><button >ПЕЧАТЬ</button></Link>
                 <button style={{padding: "6px 18px"}} onClick={() => delAllTags()}>УДАЛИТЬ ВСЕ</button>
             </div>
-            <Form>
-                <Form.Control placeholder="Код товара..." value={productId===0 ? '' : productId} onChange={(e) => setProductId(e.target.value)} />
+            <Form onSubmit={() => addTag()}>
+                <Form.Control placeholder="Код товара..." value={productId===0 ? '' : productId} onChange={(e) => {
+                    setProductId(e.target.value)
+                }} />
             </Form>
             <ProductSearchFeature
                 setProductId={setProductId}

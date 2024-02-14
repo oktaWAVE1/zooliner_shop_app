@@ -15,6 +15,68 @@ class ProductController {
         return res.json(products)
     }
 
+    async getPopularProducts (req, res) {
+        const weight = await ProductRemote.findAll({
+            where: {product_in_stock: {[Op.gt]: 0}, Наименование: 'развес г.'},
+            include: [
+                {model: ProductRemote, as: 'parent'},
+            ]})
+        const piece = await ProductRemote.findAll({
+            where: {product_in_stock: {[Op.gt]: 0}, Наименование: {[Op.substring]: '1 шт'}},
+            include: [
+                {model: ProductRemote, as: 'parent'},
+            ]})
+        const cat_step = await ProductRemote.findAll({
+            where: {Наименование: 'CAT STEP'},
+            include: [
+                {model: ProductRemote, as: 'children'},
+            ]})
+        const noname = await ProductRemote.findAll({
+            where: {'Наименование (крат опис)': {[Op.substring]: 'Noname'}},
+            include: [
+                {model: ProductRemote, as: 'children'},
+            ]})
+        const ecopremium = await ProductRemote.findAll({
+            where: {Наименование: 'Ecopremium'},
+            include: [
+                {model: ProductRemote, as: 'children'},
+            ]})
+        const silicagel = await ProductRemote.findAll({
+            where: {'Наименование (крат опис)': 'кусковой'},
+            include: [
+                {model: ProductRemote, as: 'children'},
+            ]})
+        const barsik = await ProductRemote.findAll({
+            where: {'Наименование (крат опис)': {[Op.substring]: 'наполнитель'}, Наименование: 'БАРСИК'},
+            include: [
+                {model: ProductRemote, as: 'children'},
+            ]})
+        const pipi_bent = await ProductRemote.findAll({
+            where: {Наименование: 'Pi-Pi Bent'},
+            include: [
+                {model: ProductRemote, as: 'children'},
+            ]})
+        const n1 = await ProductRemote.findAll({
+            where: {'Наименование (крат опис)': {[Op.substring]: 'наполнитель'}, Наименование: {[Op.substring]: 'N1'}},
+            include: [
+                {model: ProductRemote, as: 'children'},
+            ]})
+        const products = [
+            {key: 'Развес', items: weight},
+            {key: 'Поштучно', items: piece},
+            {key: 'Noname', items: noname},
+            {key: 'Ecopremium', items: ecopremium},
+            {key: 'Силикагель', items: silicagel},
+            {key: 'Cat step', items: cat_step},
+            {key: 'Барск', items: barsik},
+            {key: 'PiPi Bent', items: pipi_bent},
+            {key: 'N1', items: n1},
+        ]
+
+
+        return res.json(products)
+    }
+
 
 
     async getProduct (req, res) {

@@ -30,9 +30,9 @@ export const addNewRealizationItem = async ({realizationId, itemId, barcode}) =>
     return data
 }
 
-export const confirmCurrentRealization = async ({id}) => {
+export const confirmCurrentRealization = async ({id, date}) => {
     if(window.confirm('Провести?')) {
-        const {data} = await $authHost.post('api/realization/confirm', {id})
+        const {data} = await $authHost.post('api/realization/confirm', {id, date})
         return data
     }
 }

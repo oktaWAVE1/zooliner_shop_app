@@ -62,7 +62,7 @@ class RealizationContoller {
             ]
         })
         const realization = realizations[0]
-        if (realization?.sellsRemotes?.length > 0) {
+        if (realization?.sellsRemotes?.length > 0 || realization.Проведение===true) {
             await SellsCounterRemote.create({Счетчик: parseInt(realization.Счетчик) + 1}).then((real) => {
                 return res.json({id: parseInt(real.Счетчик)})
             })
@@ -76,30 +76,35 @@ class RealizationContoller {
     async confirmRealization (req, res, next) {
         try {
             const {id} = req.body
-            console.log(1)
+            let {date} = req.body
+            if (!date || date?.length<0){
+                date = (new Date)
+                date = date.setHours(date.getHours() + 3)
+
+            }
+            console.log(date)
             const realization = await SellsCounterRemote.findOne({where: {Счетчик: id}, include: [
                     {model: SellsRemote}
                 ]})
-            console.log(2)
             if (!realization) {
                 return next(ApiError.badRequest('Реализация не найдена'))
             }
-            console.log(3)
             if(realization.Проведение){
                 return next(ApiError.badRequest('Реализация уже проведена'))
             }
-            console.log(4)
+            if(realization.sellsRemotes?.length===0){
+                return next(ApiError.badRequest('Нет позиций в реализации'))
+            }
             const extraProducts = []
             for (let item of realization.sellsRemotes){
                 const product = await ProductRemote.findOne({where: {Код: item['Код товара']}})
-                console.log(5)
                 if(product){
                     const cost = product['Средний закуп'] > 0 ? product['Средний закуп'] : product['Закуп последний']
                     const revenue = (item.Цена-cost)*item.Количество
                     if(realization.Безнал){
-                        await SellsRemote.update({Прибыль: revenue*0.982}, {where: {Счетчик: item.Счетчик}})
+                        await SellsRemote.update({Прибыль: revenue*0.982, Дата: date}, {where: {Счетчик: item.Счетчик}})
                     } else {
-                        await SellsRemote.update({Прибыль: revenue}, {where: {Счетчик: item.Счетчик}})
+                        await SellsRemote.update({Прибыль: revenue, Дата: date}, {where: {Счетчик: item.Счетчик}})
                     }
                     if (product.product_in_stock<item.Количество){
                         extraProducts.push({
@@ -146,15 +151,18 @@ class RealizationContoller {
             for (let extraProduct of extraProducts) {
                 await ExtraProductsLogsRemote.create({productId: extraProduct.id, name: extraProduct.name, qty: extraProduct.extraQTY, price: extraProduct.price})
             }
+
             await SellsCounterRemote.update({Проведение: true},{where: {Счетчик: id}}).then(() => {
                 return res.json(extraProducts.length===0 ? {status: 'ok'} : {status: 'extra products', extraProducts})
             })
+
 
         } catch (e) {
             console.log(e.message)
             return next(ApiError.badRequest(e.message))
         }
     }
+
 
     async addRealizationItem (req, res, next) {
         try{

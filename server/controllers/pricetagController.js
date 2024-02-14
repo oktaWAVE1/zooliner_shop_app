@@ -40,8 +40,26 @@ class PriceTagController {
     async delPriceTag (req, res) {
         try{
             const {id} = req.params
-            await PriceTagRemote.destroy({limit: 1, where: {Код: id}})
-            return res.json("Ценник удален")
+            const tag = await PriceTagRemote.findOne({where: {Код: id}})
+            if(tag) {
+                await PriceTagRemote.destroy({limit: 1, where: {Код: id}})
+                return res.json("Ценник удален")
+            } else {
+                const product = await ProductRemote.findOne({where: {Код: id}, include: [
+                        {model: ProductRemote, as: 'parent', include: [
+                                {model: ProductRemote, as: 'children'}
+                            ]}
+                    ]})
+                if(product && product.parent && product.parent.children){
+                    for (let p of product.parent.children){
+                        if (p.Наименование==='развес г.'){
+                            await PriceTagRemote.destroy({limit: 1, where: {Код: p.Код}})
+                            return res.json("Ценник удален")
+                        }
+                    }
+                }
+            }
+           return res.json("Не найдено")
         } catch (e) {
             console.log(e)
         }

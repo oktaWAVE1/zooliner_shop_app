@@ -91,3 +91,6 @@
 13.02.2024, 22:34:00 Ошибка: Class constructor model cannot be invoked without 'new' 
 13.02.2024, 22:34:23 Ошибка: Class constructor model cannot be invoked without 'new' 
 13.02.2024, 23:43:13 Ошибка: Не авторизован 
+14.02.2024, 12:36:13 Ошибка: date.getHours is not a function 
+14.02.2024, 12:37:32 Ошибка: date.toUTCString is not a function 
+14.02.2024, 14:28:06 Ошибка: Не авторизован 

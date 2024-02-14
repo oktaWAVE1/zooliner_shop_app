@@ -4,12 +4,12 @@ import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
 import {Link} from "react-router-dom";
 
-const RealizationTotalFeature = observer(({total, discount, delivery, realizationDone, id, disabled, setRefresh, setAlertMessage, setExtraProducts}) => {
+const RealizationTotalFeature = observer(({total, discount, date, delivery, realizationDone, id, disabled, setRefresh, setAlertMessage, setExtraProducts}) => {
     const discountedTotal = total - discount + delivery
-    const {loading} = useContext(Context)
+    const {loading, realizations} = useContext(Context)
     const confirmRealization = async () => {
         loading.setLoading(true)
-        await confirmCurrentRealization({id}).then((data) => {
+        await confirmCurrentRealization({id, date}).then((data) => {
             if(data?.status==='extra products'){
                 setExtraProducts(data.extraProducts)
                 setAlertMessage({title: 'Товар не числится на складе:', message: '', show: true, variant: 'danger'})
@@ -21,7 +21,7 @@ const RealizationTotalFeature = observer(({total, discount, delivery, realizatio
         <div className="d-flex w-100 justify-content-between realizationTotal mt-2">
             <div className='d-flex gap-3'>
                 <div className={realizationDone ? 'realization done' : 'realization'}>{realizationDone ? 'ПРОВЕДЕНО' : 'НЕ ПРОВЕДЕНО'}</div>
-                <button disabled={disabled || loading.loading} onClick={() => confirmRealization()}>ПРОВЕСТИ</button>
+                <button disabled={disabled || loading.loading || realizations.realizationItems.length===0} onClick={() => confirmRealization()}>ПРОВЕСТИ</button>
                 <Link to={`/print/order/${id}`} target="_blank"><button className="px-2">ЧЕК</button></Link>
             </div>
             <div className="d-flex gap-3 w-auto mt-3 justify-content-end realizationTotalSums">

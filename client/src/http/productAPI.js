@@ -46,3 +46,8 @@ export const fetchProductByCode = async({Код}) => {
     return data
 }
 
+export const fetchPopularProducts = async() => {
+    const {data} = await $authHost.get(`api/product/popular`)
+    return data
+}
+

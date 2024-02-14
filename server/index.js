@@ -12,6 +12,9 @@ const cookieParser = require('cookie-parser')
 const port = process.env.PORT || 5000
 
 const app = express()
+
+process.env.TZ = 'Europe/Moscow'
+
 app.use(cookieParser())
 app.use(cors({
     credentials: true,

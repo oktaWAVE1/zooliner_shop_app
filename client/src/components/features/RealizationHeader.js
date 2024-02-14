@@ -17,10 +17,12 @@ import RealizationCustomerFeature from "./RealizationCustomerFeature";
 import RealizationDiscountFeature from "./RealizationDiscountFeature";
 import RealizationDate from "./RealizationDate";
 import {Alert} from "react-bootstrap";
+import PopularProductsModal from "../modals/popularProductsModal";
 
 const RealizationHeader = ({id, refresh, setRefresh}) => {
     const {realizations, loading} = useContext(Context)
     const [extraProducts, setExtraProducts] = useState([]);
+    const [showModal, setShowModal] = useState(false);
     const [total, setTotal] = useState(0);
     const [deliveryCost, setDeliveryCost] = useState(0);
     const [discount, setDiscount] = useState({sum: 0, description: ''});
@@ -29,6 +31,7 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
     const [paymentMethod, setPaymentMethod] = useState(false);
     const [date, setDate] = useState('');
     const [alertMessage, setAlertMessage] = useState({title: '', message: '', show: false, variant: 'danger'})
+    const [finalTotal, setFinalTotal] = useState(0);
     const setDeliveryMethod = async (e) => {
         e.preventDefault()
         await updateRealizationDeliveryMethod({
@@ -72,6 +75,12 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
     useDebounce(async ()=> {
         fetchCurrent()
     }, 200, [refresh])
+    useDebounce(() => {
+        console.log(total)
+        console.log(discount)
+        console.log(deliveryCost)
+        setFinalTotal(total-discount.sum+deliveryCost)
+    }, 0, [total, discount.sum, deliveryCost])
 
 
     return (
@@ -94,13 +103,17 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
                     </p>
                 </Alert>
             }
+            <PopularProductsModal disabled={realizations.currentRealization.Проведение} id={id} setRefresh={setRefresh} show={showModal} onHide={() => setShowModal(false)} />
             <div className="w-100 d-flex gap-4">
                 <div className="w-50">
                     <div style={{height: "34px"}} className='d-flex gap-3 mb-1 justify-content-between'>
-                        <CountChangeFeature refresh={refresh} total={total} />
+                        <CountChangeFeature refresh={refresh} total={finalTotal} />
                         <RealizationDate date={date} setDate={setDate} disabled={realizations.currentRealization.Проведение} />
                     </div>
-                    <CountWeightFeature refresh={refresh} />
+                    <div style={{height: "34px"}} className='d-flex gap-3 mb-1 justify-content-between'>
+                        <CountWeightFeature refresh={refresh} />
+                        <button className="p-1" onClick={() => setShowModal(true)}>ПОПУЛЯРНЫЕ ТОВАРЫ</button>
+                    </div>
                     <div className='d-flex w-100 gap-1'>
                         <DeliveryMethodsFeature
                             currentDeliveryMethod={currentDeliveryMethod}
@@ -114,7 +127,7 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
                     <AddProductToRealization payment={paymentMethod} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} />
                 </div>
             </div>
-            <RealizationTotalFeature setExtraProducts={setExtraProducts} setAlertMessage={setAlertMessage} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} realizationDone={realizations.currentRealization.Проведение} total={total} discount={realizations.currentRealization.discount} delivery={deliveryCost} />
+            <RealizationTotalFeature date={date} setExtraProducts={setExtraProducts} setAlertMessage={setAlertMessage} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} realizationDone={realizations.currentRealization.Проведение} total={total} discount={realizations.currentRealization.discount} delivery={deliveryCost} />
         </div>
     );
 };
