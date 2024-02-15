@@ -183,13 +183,18 @@ button:disabled, button:hover:disabled {
 }
 .priceTagItem .priceTagTitle {
     line-height: 1.1rem;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: #343a40;
     font-weight: 600;
 }
 
+.priceTagItem h2 {
+    font-size: 2.3rem;
+    color: #343a40;
+}
+
 .priceTagItem small {
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 .orderPage {
@@ -313,5 +318,16 @@ button:disabled, button:hover:disabled {
     grid-template-columns: 20px 10fr 2fr 2fr 2fr;
     border-bottom: 1px solid #777;
     gap: 8px;
+    align-items: center;
+}
+
+.orderPrintItems div {
+    font-size: 1.3rem;
+    line-height: 1.45rem;
+    padding: 1px 0;
+}
+
+.orderPrintItems .total div {
+    font-size: 1.5rem;
 }
 

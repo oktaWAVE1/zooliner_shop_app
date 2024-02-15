@@ -31,7 +31,7 @@ const OrderItemsList = () => {
         })}, []);
 
     return (
-        <div className="w-100 px-3 mt-3">
+        <div className="w-100 px-3 mt-3 orderPrintItems">
             <div>Клиент: {realization?.customersRemote?.Имя}</div>
             <div>Адрес: {realization?.customersRemote?.Адрес}</div>
             <div>Телефон: {realization?.customersRemote?.Телефон}</div>
@@ -61,7 +61,7 @@ const OrderItemsList = () => {
                 </div>
             </div>
 
-            <div className="mt-5">
+            <div className="mt-5 total">
                 <div>Итого товаров на сумму: {Math.ceil(total)}</div>
                 <div>{realization?.deliveryId>0 && `Стоимость доставки: ${deliveryCost}`}</div>
                 <div>{realization?.discount>0 && `Скидка: ${realization.discount}`}</div>

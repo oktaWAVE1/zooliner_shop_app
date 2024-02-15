@@ -1,5 +1,6 @@
 const {ProductRemote, PriceTagRemote} = require("../models/models");
 const {Op} = require("sequelize");
+const ApiError = require("../error/ApiError");
 
 class PriceTagController {
 
@@ -76,14 +77,17 @@ class PriceTagController {
 
     async addPriceTag (req, res, next) {
         const {Код} = req.body
-
-        if(Код){
+        const product = await ProductRemote.findOne({where: {Код}, include: [
+                {model: ProductRemote, as: "children"}
+            ]})
+        if(!product){
+            return next(ApiError.forbidden("Ценник не добавлен. Товар не найден."))
+        } else if(product?.children?.length>0){
+            return next(ApiError.forbidden("Ценник не добавлен. У товара есть дочерние."))
+        } else {
             await PriceTagRemote.create({Код})
             return res.json("Ценник добавлен")
-        } else {
-            return res.json('Пустой код')
         }
-
 
     }
 

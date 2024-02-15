@@ -54,7 +54,7 @@ const BarcodeEditItem = observer(() => {
                     }
                     {isLoading ? <Loader /> :
                     <>
-                        <Form id='editBarcodeForm' className="d-flex flex-column gap-1 justify-content-center">
+                        <Form onSubmit={() => {console.log('Штрихкода добавлен')}} id='editBarcodeForm' className="d-flex flex-column gap-1 justify-content-center">
                             <Form.Control type='text' value={barcode} onChange={e => setBarcode(e.target.value)} placeholder={"Штрихкод..."} />
                         </Form>
                         <ProductSearchFeature setIsLoading={setIsLoading} formId={2} productId={productId} products={products.products} query={query} setQuery={setQuery} setProductId={setProductId} />
