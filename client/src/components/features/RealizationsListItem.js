@@ -1,6 +1,7 @@
 import React from 'react';
 import {Accordion} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import Delivery from "../../UI/svgs/delivery";
 
 const RealizationsListItem = ({realization}) => {
     const date = new Date(realization.sellsRemotes[0]['Дата'])
@@ -16,7 +17,7 @@ const RealizationsListItem = ({realization}) => {
                         {date.toLocaleString('ru-RU', {timeZone: "Europe/London"})}
                     </div>
                     <div>
-                        <b>{realization?.Счетчик}</b>
+                        <b>{realization?.Счетчик}{realization.deliveryId>0 && <span className="mx-2"><Delivery/></span>}</b>
                     </div>
                     <div>
                         <b>{total} ₽</b>
