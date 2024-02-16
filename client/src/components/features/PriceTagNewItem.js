@@ -60,7 +60,7 @@ const PriceTagNewItem = observer(() => {
                 formId={1}
                 />
             <div className="d-flex justify-content-center mt-2">
-                <button disabled={productId===0} onClick={() => addTag()}>ДОБАВИТЬ</button>
+                <button disabled={productId===0} onClick={(e) => addTag(e)}>ДОБАВИТЬ</button>
             </div>
 
         </Card>
