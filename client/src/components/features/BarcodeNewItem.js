@@ -16,21 +16,25 @@ const BarcodeNewItem = observer(() => {
     const [query, setQuery] = useState('');
     const [accordionKey, setAccordionKey] = useState("1");
     const {products} = useContext(Context)
-    const addBarcode = async () => {
-        setIsLoading(true)
-        await addNewBarcode({
-            Штрихкод: newBarcode,
-            Код: productId
-        })
-            .then((res) => {
-                if(res.Штрихкод){
-                    setAlertMessage({title: '', message: `Штрихкод ${res.Штрихкод} - добавлен`, show: true, variant: 'success'})
-                    setNewBarcode('')
-                    setQuery('')
-                } else {
-                    setAlertMessage({title: '', message: res.message, show: true, variant: 'danger'})
-                }
-            }).finally(() => setIsLoading(false))
+    const addBarcode = async (e) => {
+        e.preventDefault()
+        if(String(productId)!=='0' && productId){
+            setIsLoading(true)
+            await addNewBarcode({
+                Штрихкод: newBarcode,
+                Код: productId
+            })
+                .then((res) => {
+                    if(res.Штрихкод){
+                        setAlertMessage({title: '', message: `Штрихкод ${res.Штрихкод} - добавлен`, show: true, variant: 'success'})
+                        setNewBarcode('')
+                        setQuery('')
+                        setProductId(0)
+                    } else {
+                        setAlertMessage({title: '', message: res.message, show: true, variant: 'danger'})
+                    }
+                }).finally(() => setIsLoading(false))
+        }
 
     }
 
@@ -56,12 +60,12 @@ const BarcodeNewItem = observer(() => {
                     }
                     {!isLoading ?
                         <>
-                            <Form onSubmit={() => {console.log('Штрихкода добавлен')}} id='addBarcodeForm' className="d-flex flex-column gap-1 justify-content-center mb-1">
+                            <Form onSubmit={(e) => addBarcode(e)} id='addBarcodeForm' className="d-flex flex-column gap-1 justify-content-center mb-1">
                                 <Form.Control type='text' value={newBarcode} onChange={e => setNewBarcode(e.target.value)} placeholder={"Штрихкод..."} />
                             </Form>
                                    <ProductSearchFeature setIsLoading={setIsLoading} formId={1} productId={productId} products={products.products} query={query} setQuery={setQuery} setProductId={setProductId} />
                             <div className="d-flex justify-content-center">
-                                <button className="mt-2 w-100" disabled={newBarcode.length<10 || String(productId)==='0'} onClick={() => addBarcode()}>ДОБАВИТЬ</button>
+                                <button className="mt-2 w-100" disabled={newBarcode.length<10 || String(productId)==='0'} onClick={(e) => addBarcode(e)}>ДОБАВИТЬ</button>
                             </div>
                         </> :
                         <Loader />

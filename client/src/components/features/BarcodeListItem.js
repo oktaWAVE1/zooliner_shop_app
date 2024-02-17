@@ -44,7 +44,7 @@ const BarcodeListItem = observer(({product, setRefresh, setAlertMessage}) => {
             </div>
             <Form.Control type="text" value={currentBarcode} onChange={e => setCurrentBarcode(e.target.value)} placeholder="Штрихкод..." />
             <Form.Check label="нет штрихкода" checked={product['Нет штрихкода']} onChange={e => updateNoBarcode(e)} />
-            <button style={{padding: "6px 12px"}} disabled={currentBarcode.length<11} onClick={e => addBarcode(e)}>ОТПАРВИТЬ</button>
+            <button style={{padding: "6px 12px"}} disabled={currentBarcode.length<11} onClick={e => addBarcode(e)}>ОТПРАВИТЬ</button>
         </Form>
     );
 });

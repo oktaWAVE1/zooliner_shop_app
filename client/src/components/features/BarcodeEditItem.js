@@ -14,21 +14,31 @@ const BarcodeEditItem = observer(() => {
     const [query, setQuery] = useState('');
     const [accordionKey, setAccordionKey] = useState("1");
     const {products} = useContext(Context)
-    const editCurrentBarcode = async () => {
-        setIsLoading(true)
-        await editBarcode({
-            Штрихкод: barcode,
-            Код: productId
-        })
-            .then((res) => {
-                if(res.Штрихкод){
-                    setAlertMessage({title: '', message: `Штрихкод ${res.Штрихкод} - изменен`, show: true, variant: 'success'})
-                    setBarcode('')
-                    setQuery('')
-                } else {
-                    setAlertMessage({title: '', message: res.message, show: true, variant: 'danger'})
-                }
-            }).finally(() => setIsLoading(false))
+    const editCurrentBarcode = async (e) => {
+        console.log(productId)
+        e.preventDefault()
+        if(String(productId)!=='0' && productId) {
+            setIsLoading(true)
+            await editBarcode({
+                Штрихкод: barcode,
+                Код: productId
+            })
+                .then((res) => {
+                    if (res.Штрихкод) {
+                        setAlertMessage({
+                            title: '',
+                            message: `Штрихкод ${res.Штрихкод} - изменен`,
+                            show: true,
+                            variant: 'success'
+                        })
+                        setBarcode('')
+                        setQuery('')
+                        setProductId(0)
+                    } else {
+                        setAlertMessage({title: '', message: res.message, show: true, variant: 'danger'})
+                    }
+                }).finally(() => setIsLoading(false))
+        }
 
     }
 
@@ -54,12 +64,12 @@ const BarcodeEditItem = observer(() => {
                     }
                     {isLoading ? <Loader /> :
                     <>
-                        <Form onSubmit={() => {console.log('Штрихкода добавлен')}} id='editBarcodeForm' className="d-flex flex-column gap-1 justify-content-center">
+                        <Form onSubmit={(e) => editCurrentBarcode(e)} id='editBarcodeForm' className="d-flex flex-column gap-1 justify-content-center">
                             <Form.Control type='text' value={barcode} onChange={e => setBarcode(e.target.value)} placeholder={"Штрихкод..."} />
                         </Form>
                         <ProductSearchFeature setIsLoading={setIsLoading} formId={2} productId={productId} products={products.products} query={query} setQuery={setQuery} setProductId={setProductId} />
                         <div className="d-flex justify-content-center">
-                            <button className="mt-2" disabled={barcode.length<10} onClick={() => editCurrentBarcode()}>ИЗМЕНИТЬ</button>
+                            <button className="mt-2" disabled={barcode.length<10} onClick={(e) => editCurrentBarcode(e)}>ИЗМЕНИТЬ</button>
                         </div>
                     </>
                     }
