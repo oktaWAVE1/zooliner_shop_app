@@ -4,8 +4,8 @@ import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
 import {Link} from "react-router-dom";
 
-const RealizationTotalFeature = observer(({total, discount, date, delivery, realizationDone, id, disabled, setRefresh, setAlertMessage, setExtraProducts}) => {
-    const discountedTotal = total - discount + delivery
+const RealizationTotalFeature = observer(({total, discount, date, delivery, realizationDone, id, disabled, setRefresh, setAlertMessage, setExtraProducts, siteUser}) => {
+    const discountedTotal = total - discount + delivery - Number(siteUser.bonusPointsUsed)
     const {loading, realizations} = useContext(Context)
     const confirmRealization = async () => {
         loading.setLoading(true)
@@ -18,7 +18,7 @@ const RealizationTotalFeature = observer(({total, discount, date, delivery, real
         })
     }
     return (
-        <div className="d-flex w-100 justify-content-between realizationTotal mt-2">
+        <div className="d-flex w-100 justify-content-between realizationTotal my-2">
             <div className='d-flex gap-3'>
                 <div className={realizationDone ? 'realization done' : 'realization'}>{realizationDone ? 'ПРОВЕДЕНО' : 'НЕ ПРОВЕДЕНО'}</div>
                 <button disabled={disabled || loading.loading || realizations.realizationItems.length===0} onClick={() => confirmRealization()}>ПРОВЕСТИ</button>
@@ -26,7 +26,7 @@ const RealizationTotalFeature = observer(({total, discount, date, delivery, real
             </div>
             <div className="d-flex gap-3 w-auto mt-3 justify-content-end realizationTotalSums">
                 <div>{delivery>0 && `Стоимость доставки: ${delivery} ₽`}</div>
-                <div>{discount>0 && `Скидка: ${discount} ₽`}</div>
+                <div>{(discount+siteUser.bonusPointsUsed)>0 && `Скидка: ${(discount+Number(siteUser.bonusPointsUsed))} ₽`}</div>
                 <div>{total !== discountedTotal && `Стоимость товара: ${Math.ceil(total)} ₽`}</div>
                 <div style={{color: "darkred"}}>Итого: {Math.ceil(discountedTotal)} ₽</div>
             </div>

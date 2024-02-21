@@ -10,6 +10,7 @@ import RealizationsStore from "./store/RealizationsStore";
 import OrdersStore from "./store/OrdersStore";
 import CustomersStore from "./store/CustomersStore";
 import PageStore from "./store/PageStore";
+import SiteOrdersStore from "./store/SiteOrdersStore";
 
 export const Context = createContext(null)
 
@@ -23,7 +24,8 @@ root.render(
         realizations: new RealizationsStore(),
         orders: new OrdersStore(),
         customers: new CustomersStore(),
-        currentPages: new PageStore()
+        currentPages: new PageStore(),
+        siteOrders: new SiteOrdersStore()
     }}
     >
 

@@ -33,7 +33,7 @@ const BarcodeListItem = observer(({product, setRefresh, setAlertMessage}) => {
         }
     }
     return (
-        <Form onSubmit={() => {console.log('Штрихкода добавлен')}} className="barcodeListItem mt-1">
+        <Form onSubmit={() => {console.log('Штрихкода добавлен')}} className="barcodeListItem py-2">
             <div>
                 {product.Код}
             </div>

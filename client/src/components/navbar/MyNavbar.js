@@ -10,7 +10,7 @@ import {userLogout} from "../../http/userAPI";
 
 
 const MyNavbar = observer(() => {
-    const {user} = useContext(Context)
+    const {user, siteOrders} = useContext(Context)
     const location = useLocation()
     const isPrintable = location.pathname.split('/')[1]==='print'
     const navigate = useNavigate()
@@ -46,6 +46,7 @@ const MyNavbar = observer(() => {
                                     <Link className={cl.navbarItem} to={'/barcodes'}>Штрихкоды</Link>
                                     <Link className={cl.navbarItem} to={'/price-tags'}>Ценники</Link>
                                     <Link className={cl.navbarItem} to={'/brand-stocks'}>Проверка остатков</Link>
+                                    <Link className={siteOrders?.siteOrders?.length>0 ? [cl.navbarItem, 'internetOrdersLink'].join(' ') : cl.navbarItem} to={'/site/orders'}>Интернет заказы<span>{siteOrders?.siteOrders?.length>0 && siteOrders?.siteOrders?.length}</span></Link>
                                 </Nav>
                             }
 

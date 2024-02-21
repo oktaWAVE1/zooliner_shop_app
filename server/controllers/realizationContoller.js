@@ -15,6 +15,27 @@ class RealizationContoller {
         return res.json(realizations)
     }
 
+
+    async getRealizationsDeliveriesToday (req, res, next) {
+        const date = new Date()
+        date.setHours(0)
+
+        const realizations = await SellsCounterRemote.findAll(
+            {order: [['deliveryId', "ASC"]],
+                    where: {deliveryId: {[Op.gt]: 0}},
+                    include: [
+                    {model: SellsRemote, where: {
+                            Дата: {[Op.gte]: date},
+                        }},
+                    {model: DeliveryRemote},
+                    {model: CustomersRemote},
+                ]}
+        )
+
+        return res.json(realizations)
+    }
+
+
     async getRealizationsDateRange (req, res, next) {
         let {dateStart, dateEnd} = req.query
         if (!dateEnd || !dateEnd) {
@@ -169,7 +190,7 @@ class RealizationContoller {
             let date = new Date()
             const today = `${date.getFullYear()}-${String(date.getMonth()+1).length>1 ? date.getMonth()+1 : `0${date.getMonth()+1}`}-${String(date.getDate()).length>1 ? date.getDate() : `0${date.getDate()}`}`
             console.log(today)
-            let {realizationId, itemId, barcode} = req.body
+            let {realizationId, itemId, barcode, qty} = req.body
             if(barcode) {
                 const productId = await BarcodeRemote.findOne({where: {Штрихкод: barcode}})
                 itemId = productId.Код
@@ -189,15 +210,33 @@ class RealizationContoller {
                 await SellsRemote.update({Количество: realization.sellsRemotes[0].Количество+1},
                     {where: {"№ реализации": realizationId, "Код товара": itemId}}).then(() => {return res.json("Товар добавлен")})
             } else {
-                const product = await ProductRemote.findOne({where: {Код: itemId}, include: [
-                        {model: ProductRemote, as: 'parent'},
+                let product = await ProductRemote.findOne({where: {Код: itemId}, include: [
+                        {model: ProductRemote, as: 'parent', include: [
+                                {model: ProductRemote, as: 'children'}
+                            ]},
                         {model: ProductRemote, as: 'children'},
                     ]})
+
                 if (product?.children?.length>0){
                     return next(ApiError.badRequest("У товара есть дочерние, нельзя добавить"))
                 }
-                const title = product?.parent?.Код ? `${product.parent.Наименование} ${product.parent['Наименование (крат опис)']} ${product.Наименование}`:
+                let productPrice = product.Цена
+                let productSum = product.Цена*qty
+                let title = product?.parent?.Код ? `${product.parent.Наименование} ${product.parent['Наименование (крат опис)']} ${product.Наименование}`:
                     `${product.Наименование} ${product['Наименование (крат опис)']}`
+
+                if(product.Наименование === 'развес 100 г.'){
+                    product.parent.children.forEach((pr) => {
+                        if(pr.Наименование === 'развес г.'){
+                            qty = qty ? qty * 100 : 100
+                            itemId = pr.Код
+                            productPrice = pr.Цена
+                            productSum = productPrice*qty
+                            title =  `${product.parent.Наименование} ${product.parent['Наименование (крат опис)']} ${pr.Наименование}`
+                        }
+                    })
+                }
+
 
                 await SellsRemote.create({
                     "Счетчик": lastRealizationSell[0].Счетчик+1,
@@ -205,10 +244,10 @@ class RealizationContoller {
                     "Код товара": itemId,
                     "Наименование": title,
                     "Код магазина": 'PA60',
-                    Количество: 1,
+                    Количество: qty || 1,
                     Дата: today,
-                    Цена: product.Цена,
-                    Сумма: product.Цена
+                    Цена: productPrice,
+                    Сумма: productSum
                 }).then(() => {
                     return res.json("Товар добавлен")
                 })
@@ -236,6 +275,18 @@ class RealizationContoller {
             const {deliveryId, realizationId} = req.body
             await SellsCounterRemote.update({deliveryId}, {where: {Счетчик: realizationId}}).then(() => {
                 return res.json("Метод доставки изменен")
+            })
+
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    async updateOrderSiteCustomer (req, res) {
+        try {
+            const {siteUserId, siteOrderId ,realizationId, bonusPointsUsed} = req.body
+            await SellsCounterRemote.update({siteUserId, siteOrderId, bonusPointsUsed}, {where: {Счетчик: realizationId}}).then(() => {
+                return res.json("Установлен пользователь сайта")
             })
 
         } catch (e) {

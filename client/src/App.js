@@ -6,15 +6,22 @@ import {observer} from "mobx-react-lite";
 import {Context} from "./index";
 import Loader from "./UI/Loader/Loader";
 import {check} from "./http/userAPI";
+import {fetchUnreadSiteOrders} from "./http/siteAPI";
 
 const AppRouter = React.lazy(() => import('./components/appRouter'));
 const MyNavbar = React.lazy(() => import('./components/navbar/MyNavbar'));
 
 
 const App = observer(() => {
-  const {user} = useContext(Context)
+  const {user, siteOrders} = useContext(Context)
   const [loading, setLoading] = useState(false)
   useEffect(() => {
+
+    const siteOrderInterval =  setInterval(async () => {
+      await fetchUnreadSiteOrders().then(data => {
+        siteOrders.setSiteOrders(data)
+      })
+    }, 1000 * 60)
     check().then(data => {
       if(typeof data === 'object') {
         user.setUser(data);
@@ -29,8 +36,11 @@ const App = observer(() => {
         }
       }, 1000)
     })
+    return () => {clearInterval(siteOrderInterval)}
     // eslint-disable-next-line
   },[])
+ 
+
   if(loading) {
     return <Loader />
   }

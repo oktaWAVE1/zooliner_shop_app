@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {fetchDeliveryMethods} from "../../http/realizationAPI";
 import {Form} from "react-bootstrap";
 
-const DeliveryMethodsFeature = ({disabled, currentDeliveryMethod, setDeliveryMethod}) => {
+const DeliveryMethodsFeature = ({currentDeliveryMethod, setDeliveryMethod}) => {
     const [deliveryMethods, setDeliveryMethods] = useState([]);
     useEffect(() => {
         fetchDeliveryMethods().then(data => setDeliveryMethods(data))

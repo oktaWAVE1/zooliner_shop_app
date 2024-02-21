@@ -120,8 +120,21 @@ button:disabled, button:hover:disabled {
     grid-template-columns: 2fr 12fr 12fr 5fr 2fr;
     align-items: center;
     gap: 5px;
-    margin-top: 10px;
     border-bottom: solid #AAA 1px;
+}
+
+.barcodeListItem:hover {
+    background-color: var(--main-theme-active-color);
+    transition: all linear 200ms;
+}
+
+.barcodeListItem:hover div,.barcodeListItem:hover label {
+    color: white;
+}
+
+.barcodeListItem:hover button:hover {
+    background-color: #2ea9f7;
+    color: white;
 }
 
 .orderListItem {
@@ -331,3 +344,41 @@ button:disabled, button:hover:disabled {
     font-size: 1.5rem;
 }
 
+.internetOrdersLink {
+    position: relative;
+}
+
+.internetOrdersLink span {
+    color: white;
+    border-radius: 3px;
+    padding: 0 3px;
+    background-color: #fe5117;
+    position: absolute;
+    right: -5px;
+    top: 25px;
+    font-size: 0.8rem;
+}
+
+.siteOrdersItem {
+    padding: 2px 6px;
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 4fr 1fr;
+    cursor: pointer;
+}
+
+.siteOrdersItem:hover {
+    background-color: var(--main-theme-active-color);
+}
+
+.siteOrdersItem:hover div {
+    color: white;
+}
+
+.siteOrderListHeader, .siteOrderListItem {
+    padding: 2px 6px;
+    display: grid;
+    align-items: center;
+    border-bottom: solid 1px #777777;
+    gap: 4px;
+    grid-template-columns: 1fr 5fr 1fr 1fr 1fr;
+}

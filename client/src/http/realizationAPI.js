@@ -20,13 +20,18 @@ export const fetchDeliveryMethods = async() => {
     return data
 }
 
+export const fetchRealizationsToday = async() => {
+    const {data} = await $authHost.get(`api/realization/today_deliveries`)
+    return data
+}
+
 export const addNewRealization = async () => {
     const {data} = await $authHost.get('api/realization/new')
     return data
 }
 
-export const addNewRealizationItem = async ({realizationId, itemId, barcode}) => {
-    const {data} = await $authHost.post('api/realization/add', {realizationId, itemId, barcode})
+export const addNewRealizationItem = async ({realizationId, itemId, qty, barcode}) => {
+    const {data} = await $authHost.post('api/realization/add', {realizationId, itemId, qty, barcode})
     return data
 }
 
@@ -49,6 +54,11 @@ export const updateRealizationDeliveryMethod = async ({deliveryId, realizationId
 
 export const updateRealizationPaymentMethod = async ({payment, realizationId}) => {
     const {data} = await $authHost.patch(`api/realization/payment`, {payment, realizationId})
+    return data
+}
+
+export const updateRealizationSiteCustomer = async ({siteUserId, siteOrderId ,realizationId, bonusPointsUsed}) => {
+    const {data} = await $authHost.patch(`api/realization/site/user`, {siteUserId, siteOrderId ,realizationId, bonusPointsUsed})
     return data
 }
 

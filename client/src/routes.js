@@ -10,6 +10,7 @@ import PrintTagsPage from "./pages/PrintTagsPage";
 import PrintBrandStocksPage from "./pages/PrintBrandStocksPage";
 import BrandStocksPage from "./pages/BrandStocksPage";
 import PrintOrderPage from "./pages/PrintOrderPage";
+import SireOrderPage from "./pages/SireOrderPage";
 
 export const publicRoutes = [
     {path: '/', element: <IndexPage/>},
@@ -33,6 +34,7 @@ export const managerRoutes = [
     {path: '/print/order/:id', element: <PrintOrderPage />},
     {path: '/print/brand-stocks/:id', element: <PrintBrandStocksPage />},
     {path: '/brand-stocks', element: <BrandStocksPage />},
+    {path: '/site/orders', element: <SireOrderPage />},
 ]
 
 export const adminRoutes = [
@@ -46,4 +48,5 @@ export const adminRoutes = [
     {path: '/print/price-tags', element: <PrintTagsPage />},
     {path: '/print/brand-stocks/:id', element: <PrintBrandStocksPage />},
     {path: '/brand-stocks', element: <BrandStocksPage />},
+    {path: '/site/orders', element: <SireOrderPage />},
 ]

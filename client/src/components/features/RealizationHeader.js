@@ -18,6 +18,7 @@ import RealizationDiscountFeature from "./RealizationDiscountFeature";
 import RealizationDate from "./RealizationDate";
 import {Alert} from "react-bootstrap";
 import PopularProductsModal from "../modals/popularProductsModal";
+import RealizationBonusFeature from "./RealizationBonusFeature";
 
 const RealizationHeader = ({id, refresh, setRefresh}) => {
     const {realizations, loading} = useContext(Context)
@@ -30,6 +31,7 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
     const [currentDeliveryMethod, setCurrentDeliveryMethod] = useState(0);
     const [paymentMethod, setPaymentMethod] = useState(false);
     const [date, setDate] = useState('');
+    const [siteUser, setSiteUser] = useState({userId: 0, bonusPointsUsed: 0});
     const [alertMessage, setAlertMessage] = useState({title: '', message: '', show: false, variant: 'danger'})
     const [finalTotal, setFinalTotal] = useState(0);
     const setDeliveryMethod = async (e) => {
@@ -60,6 +62,8 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
                 setDeliveryCost(0)
             }
             setDate('')
+            console.log(data)
+            setSiteUser({userId: data.siteUserId || 0, bonusPointsUsed: data.bonusPointsUsed || 0})
             setCurrentDeliveryMethod(data.deliveryId || 0)
             setCurrentCustomer(data.userId || 0)
             setPaymentMethod(data.Безнал)
@@ -127,7 +131,8 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
                     <AddProductToRealization setAlertMessage={setAlertMessage} payment={paymentMethod} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} />
                 </div>
             </div>
-            <RealizationTotalFeature date={date} setExtraProducts={setExtraProducts} setAlertMessage={setAlertMessage} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} realizationDone={realizations.currentRealization.Проведение} total={total} discount={realizations.currentRealization.discount} delivery={deliveryCost} />
+            <RealizationBonusFeature setAlertMessage={setAlertMessage} disabled={realizations.currentRealization.Проведение} siteUser={siteUser} setSiteUser={setSiteUser} />
+            <RealizationTotalFeature date={date} setExtraProducts={setExtraProducts} setAlertMessage={setAlertMessage} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} realizationDone={realizations.currentRealization.Проведение} total={total} discount={realizations.currentRealization.discount} delivery={deliveryCost} siteUser={siteUser} />
         </div>
     );
 };
