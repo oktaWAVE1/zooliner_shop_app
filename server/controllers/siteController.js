@@ -6,7 +6,7 @@ class siteController {
 
 
     async getUnreadOrders (req, res) {
-        const orders = await OrderSite.findAll({where: {read: false},
+        const orders = await OrderSite.findAll({where: {read: false, status: {[Op.ne]: "Создан"}},
             order: [['createdAt', 'DESC']],
             include: [
                 {model: DeliveryMethodSite},
