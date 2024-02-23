@@ -17,7 +17,8 @@ router.patch('/delivery', checkRole(['ADMIN, MANAGER']),realizationController.up
 router.patch('/payment', checkRole(['ADMIN, MANAGER']),realizationController.updatePaymentMethod)
 router.patch('/discount', checkRole(['ADMIN, MANAGER']),realizationController.updateDiscount)
 router.patch('/user', checkRole(['ADMIN, MANAGER']),realizationController.updateUser)
-router.patch('/item/qty', checkRole(['ADMIN, MANAGER']),realizationController.updateSellsItemQty)
+router.patch('/refund', checkRole(['ADMIN, MANAGER']),realizationController.updateRefund)
+router.patch('/item/price_qty', checkRole(['ADMIN, MANAGER']),realizationController.updateSellsItemPriceQty)
 router.patch('/site/user', checkRole(['ADMIN, MANAGER']), realizationController.updateOrderSiteCustomer)
 
 

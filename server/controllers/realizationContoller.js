@@ -84,7 +84,7 @@ class RealizationContoller {
         })
         const realization = realizations[0]
         if (realization?.sellsRemotes?.length > 0 || realization.Проведение===true) {
-            await SellsCounterRemote.create({Счетчик: parseInt(realization.Счетчик) + 1}).then((real) => {
+            await SellsCounterRemote.create({Счетчик: parseInt(realization.Счетчик) + 1, refund: false}).then((real) => {
                 return res.json({id: parseInt(real.Счетчик)})
             })
 
@@ -190,7 +190,7 @@ class RealizationContoller {
             let date = new Date()
             const today = `${date.getFullYear()}-${String(date.getMonth()+1).length>1 ? date.getMonth()+1 : `0${date.getMonth()+1}`}-${String(date.getDate()).length>1 ? date.getDate() : `0${date.getDate()}`}`
             console.log(today)
-            let {realizationId, itemId, barcode, qty} = req.body
+            let {realizationId, itemId, barcode, qty, refund} = req.body
             if(barcode) {
                 const productId = await BarcodeRemote.findOne({where: {Штрихкод: barcode}})
                 itemId = productId.Код
@@ -207,7 +207,7 @@ class RealizationContoller {
             }
 
             if(realization){
-                await SellsRemote.update({Количество: realization.sellsRemotes[0].Количество+1},
+                await SellsRemote.update({Количество: refund ? realization.sellsRemotes[0].Количество-1 : realization.sellsRemotes[0].Количество+1},
                     {where: {"№ реализации": realizationId, "Код товара": itemId}}).then(() => {return res.json("Товар добавлен")})
             } else {
                 let product = await ProductRemote.findOne({where: {Код: itemId}, include: [
@@ -244,7 +244,7 @@ class RealizationContoller {
                     "Код товара": itemId,
                     "Наименование": title,
                     "Код магазина": 'PA60',
-                    Количество: qty || 1,
+                    Количество: refund ? -qty || -1 : qty || 1,
                     Дата: today,
                     Цена: productPrice,
                     Сумма: productSum
@@ -321,8 +321,6 @@ class RealizationContoller {
     async updateUser (req, res) {
         try {
             const {userId, realizationId} = req.body
-            console.log(userId)
-            console.log(realizationId)
             await SellsCounterRemote.update({userId}, {where: {Счетчик: realizationId}}).then(() => {
                 return res.json("Клиент изменен")
             })
@@ -332,12 +330,40 @@ class RealizationContoller {
         }
     }
 
-    async updateSellsItemQty (req, res) {
+    async updateRefund (req, res) {
         try {
-            const {itemId, qty} = req.body
-            await SellsRemote.update({Количество: qty}, {where: {Счетчик: itemId}}).then(() => {
-                return res.json("Количество изменено")
+            const {refund, realizationId} = req.body
+            console.log(refund)
+            const items = await SellsRemote.findAll({where: {"№ реализации": realizationId}})
+            if (refund===false){
+                await SellsRemote.destroy({where: {"№ реализации": realizationId}})
+            } else {
+                for (let item of items){
+                    await SellsRemote.update({Количество: -item.Количество}, {where: {Счетчик: item.Счетчик}})
+                }
+            }
+
+            await SellsCounterRemote.update({refund}, {where: {Счетчик: realizationId}}).then(() => {
+                return res.json("Тип реализации изменен")
             })
+
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    async updateSellsItemPriceQty (req, res) {
+        try {
+            const {itemId, qty, price} = req.body
+            if(price){
+                await SellsRemote.update({Количество: qty, Цена: price}, {where: {Счетчик: itemId}}).then(() => {
+                    return res.json("Количество изменено")
+                })
+            } else {
+                await SellsRemote.update({Количество: qty}, {where: {Счетчик: itemId}}).then(() => {
+                    return res.json("Количество изменено")
+                })
+            }
 
         } catch (e) {
             console.log(e.message)

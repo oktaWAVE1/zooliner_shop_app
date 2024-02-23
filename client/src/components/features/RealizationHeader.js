@@ -6,7 +6,7 @@ import {
     confirmCurrentRealization,
     fetchDeliveryMethods,
     fetchRealization,
-    updateRealizationDeliveryMethod,
+    updateRealizationDeliveryMethod, updateRealizationType,
     updateRealizationUser
 } from "../../http/realizationAPI";
 import AddProductToRealization from "./AddProductToRealization";
@@ -31,6 +31,7 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
     const [currentDeliveryMethod, setCurrentDeliveryMethod] = useState(0);
     const [paymentMethod, setPaymentMethod] = useState(false);
     const [date, setDate] = useState('');
+    const [refund, setRefund] = useState(false);
     const [siteUser, setSiteUser] = useState({userId: 0, bonusPointsUsed: 0});
     const [alertMessage, setAlertMessage] = useState({title: '', message: '', show: false, variant: 'danger'})
     const [finalTotal, setFinalTotal] = useState(0);
@@ -44,6 +45,13 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
     useDebounce(async () => {
         await updateRealizationUser({userId: currentCustomer, realizationId: id}).then(setRefresh(prev => prev +1))
     }, 50, [currentCustomer])
+
+    const updateRefundStatus = async () => {
+        await updateRealizationType({
+            realizationId: id,
+            refund: !refund
+        }).then(setRefresh(prev => prev +1))
+    }
 
 
     const fetchCurrent = async () => {
@@ -62,7 +70,7 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
                 setDeliveryCost(0)
             }
             setDate('')
-            console.log(data)
+            setRefund(data.refund)
             setSiteUser({userId: data.siteUserId || 0, bonusPointsUsed: data.bonusPointsUsed || 0})
             setCurrentDeliveryMethod(data.deliveryId || 0)
             setCurrentCustomer(data.userId || 0)
@@ -78,11 +86,9 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
 
     useDebounce(async ()=> {
         fetchCurrent()
-    }, 200, [refresh])
+    }, 500, [refresh])
     useDebounce(() => {
-        console.log(total)
-        console.log(discount)
-        console.log(deliveryCost)
+
         setFinalTotal(total-discount.sum+deliveryCost)
     }, 0, [total, discount.sum, deliveryCost])
 
@@ -92,7 +98,7 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
             {alertMessage.show &&
                 <Alert variant={alertMessage.variant} onClose={() => setAlertMessage({show: false})} dismissible>
                     <Alert.Heading>{alertMessage.title}</Alert.Heading>
-                    <p className={'mb-1'}>
+                    <div className={'mb-1'}>
                         {alertMessage.message}
                         {extraProducts.length > 0 &&
                             extraProducts.map((ep, index) =>
@@ -104,7 +110,7 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
                                 </div>
                             )
                         }
-                    </p>
+                    </div>
                 </Alert>
             }
             <PopularProductsModal disabled={realizations.currentRealization.Проведение} id={id} setRefresh={setRefresh} show={showModal} onHide={() => setShowModal(false)} />
@@ -128,10 +134,17 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
                     <RealizationDiscountFeature setRefresh={setRefresh} id={id} discount={discount} setDiscount={setDiscount} />
                 </div>
                 <div className="w-50">
-                    <AddProductToRealization setAlertMessage={setAlertMessage} payment={paymentMethod} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} />
+                    <AddProductToRealization refund={refund} setAlertMessage={setAlertMessage} payment={paymentMethod} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} />
                 </div>
             </div>
-            <RealizationBonusFeature setAlertMessage={setAlertMessage} disabled={realizations.currentRealization.Проведение} siteUser={siteUser} setSiteUser={setSiteUser} />
+            <div className="d-flex w-50 gap-1">
+                <RealizationBonusFeature setAlertMessage={setAlertMessage} disabled={realizations.currentRealization.Проведение} siteUser={siteUser} setSiteUser={setSiteUser} />
+                <button
+                    onClick={() => updateRefundStatus()}
+                    disabled={realizations.currentRealization.Проведение}
+                    className={refund ? "py-1 px-2 btn_refund refund" : "py-1 px-2 btn_refund realization"}
+                >ВОЗВРАТ</button>
+            </div>
             <RealizationTotalFeature date={date} setExtraProducts={setExtraProducts} setAlertMessage={setAlertMessage} setRefresh={setRefresh} disabled={realizations.currentRealization.Проведение} id={id} realizationDone={realizations.currentRealization.Проведение} total={total} discount={realizations.currentRealization.discount} delivery={deliveryCost} siteUser={siteUser} />
         </div>
     );

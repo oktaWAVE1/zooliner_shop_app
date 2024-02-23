@@ -7,7 +7,7 @@ import {Context} from "../../index";
 import {Form} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 
-const AddProductToRealization = ({id, setRefresh, disabled, payment, setAlertMessage}) => {
+const AddProductToRealization = ({id, setRefresh, disabled, payment, setAlertMessage, refund}) => {
     const navigate = useNavigate()
     const [query, setQuery] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -44,7 +44,8 @@ const AddProductToRealization = ({id, setRefresh, disabled, payment, setAlertMes
         try {
             await addNewRealizationItem({
                 realizationId: id,
-                itemId: productId
+                itemId: productId,
+                refund
             }).then((data) => {
                 if(data?.message){
                     setAlertMessage({title: '', message: data.message, show: true, variant: 'danger'})

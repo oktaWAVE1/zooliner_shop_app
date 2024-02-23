@@ -230,7 +230,7 @@ button:disabled, button:hover:disabled {
 
 .realizationListItem, .realizationListHeader {
     display: grid;
-    grid-template-columns:  16px 3fr 27fr 3fr 4fr 3fr 3fr;
+    grid-template-columns:  16px 3fr 27fr 4fr 4fr 3fr 3fr;
     width: 100%;
     align-items: center;
     gap: 5px;
@@ -381,4 +381,23 @@ button:disabled, button:hover:disabled {
     border-bottom: solid 1px #777777;
     gap: 4px;
     grid-template-columns: 1fr 5fr 1fr 1fr 1fr;
+}
+
+.btn_refund.realization{
+    color: #777777;
+    border-color: #777777;
+}
+.btn_refund.realization:hover {
+    color: white;
+    border-color: white;
+}
+
+.btn_refund.refund, .btn_refund.refund:hover:disabled{
+    background-color: darkred;
+    color: white;
+    border-color: darkred;
+}
+
+.btn_refund.refund:hover:disabled{
+    cursor: default;
 }

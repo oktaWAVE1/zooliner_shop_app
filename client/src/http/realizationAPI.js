@@ -30,8 +30,8 @@ export const addNewRealization = async () => {
     return data
 }
 
-export const addNewRealizationItem = async ({realizationId, itemId, qty, barcode}) => {
-    const {data} = await $authHost.post('api/realization/add', {realizationId, itemId, qty, barcode})
+export const addNewRealizationItem = async ({realizationId, itemId, qty, barcode, refund}) => {
+    const {data} = await $authHost.post('api/realization/add', {realizationId, itemId, qty, barcode, refund})
     return data
 }
 
@@ -72,8 +72,15 @@ export const updateRealizationUser = async ({userId, realizationId}) => {
     return data
 }
 
-export const updateRealizationItemQty = async ({itemId, qty}) => {
-    const {data} = await $authHost.patch(`api/realization/item/qty`, {itemId, qty})
+export const updateRealizationType = async ({refund, realizationId}) => {
+    if(window.confirm('Пометить реализацию как возврат?')) {
+        const {data} = await $authHost.patch(`api/realization/refund`, {refund, realizationId})
+        return data
+    }
+}
+
+export const updateRealizationItemPriceQty = async ({itemId, qty, price}) => {
+    const {data} = await $authHost.patch(`api/realization/item/price_qty`, {itemId, qty, price})
     return data
 }
 

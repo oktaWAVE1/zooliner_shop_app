@@ -47,7 +47,7 @@ const RealizationBonusFeature = ({siteUser, setSiteUser, disabled, setAlertMessa
 
     return (
         <div>
-            <Form className="w-50 d-flex gap-1">
+            <Form className="w-100 d-flex gap-1">
                 <Form.Control className="py-1 w-25"
                               disabled={disabled} type='number'
                               placeholder="QR..."
@@ -59,7 +59,6 @@ const RealizationBonusFeature = ({siteUser, setSiteUser, disabled, setAlertMessa
                               value={String(siteUser.bonusPointsUsed)==='0' ? '' : siteUser.bonusPointsUsed}
                               onChange={e => setQTY(e)} />
                 <button disabled={true} className="py-1 px-2">ПОДТВЕРДИТЬ</button>
-                <button disabled={true} className="py-1 px-2">БОНУСЫ</button>
             </Form>
             
         </div>
