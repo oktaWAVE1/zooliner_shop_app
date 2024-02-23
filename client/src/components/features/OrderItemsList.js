@@ -64,7 +64,7 @@ const OrderItemsList = () => {
             <div className="mt-5 total">
                 <div>Итого товаров на сумму: {Math.ceil(total)}</div>
                 <div>{realization?.deliveryId>0 && `Стоимость доставки: ${deliveryCost}`}</div>
-                <div>{(realization+realization.bonusPointsUsed)?.discount>0 && `Скидка: ${realization.discount+realization.bonusPointsUsed}`}</div>
+                <div>{(realization?.discount+realization.bonusPointsUsed)>0 && `Скидка: ${realization.discount+realization.bonusPointsUsed}`}</div>
                 <div>{realization?.discountDescription?.length>0 && `Комментарий: ${realization.discountDescription}`}</div>
                 <div style={{fontWeight: "800"}}>Итого: {Math.ceil(total-realization?.discount+deliveryCost-realization.bonusPointsUsed)}</div>
 
