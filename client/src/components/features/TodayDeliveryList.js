@@ -22,8 +22,8 @@ const TodayDeliveryList = () => {
                         realizations.map(r =>
                             <div key={r.Счетчик}>
                                 <div>Доставка: {r?.deliveryRemote?.name}</div>
-                                <div>Клиент: {r?.customersRemote.Имя}</div>
-                                <div>Адрес: {r?.customersRemote.Адрес}</div>
+                                <div>Клиент: {r?.customersRemote?.Имя}</div>
+                                <div>Адрес: {r?.customersRemote?.Адрес}</div>
                                 <hr />
                             </div>
                         )
