@@ -138,7 +138,7 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
                 </div>
             </div>
             <div className="d-flex w-50 gap-1">
-                <RealizationBonusFeature setAlertMessage={setAlertMessage} disabled={realizations.currentRealization.Проведение} siteUser={siteUser} setSiteUser={setSiteUser} />
+                <RealizationBonusFeature realizationId={id} setAlertMessage={setAlertMessage} disabled={realizations.currentRealization.Проведение} siteUser={siteUser} setSiteUser={setSiteUser} />
                 <button
                     onClick={() => updateRefundStatus()}
                     disabled={realizations.currentRealization.Проведение}

@@ -16,6 +16,7 @@ export const publicRoutes = [
     {path: '/', element: <IndexPage/>},
     {path: '/auth', element: <AuthPage/>},
     {path: '/print/order/:id', element: <PrintOrderPage />},
+    {path: '/print/stocks', element: <PrintStocksPage />},
 
 ]
 

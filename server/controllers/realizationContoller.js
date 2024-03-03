@@ -3,6 +3,8 @@ const {SellsCounterRemote, SellsRemote, ProductRemote, BarcodeRemote, DeliveryRe
 } = require("../models/models");
 const {Op} = require("sequelize");
 const ApiError = require("../error/ApiError");
+const bonusService = require('../service/bonus-service')
+const {OrderSite} = require("../models/modelSite");
 
 class RealizationContoller {
 
@@ -117,15 +119,17 @@ class RealizationContoller {
                 return next(ApiError.badRequest('Нет позиций в реализации'))
             }
             const extraProducts = []
+            let totalSum = 0
             for (let item of realization.sellsRemotes){
+                totalSum += item.Цена * item.Количество
                 const product = await ProductRemote.findOne({where: {Код: item['Код товара']}})
                 if(product){
                     const cost = product['Средний закуп'] > 0 ? product['Средний закуп'] : product['Закуп последний']
-                    const revenue = (item.Цена-cost)*item.Количество
+                    const profit = (item.Цена-cost)*item.Количество
                     if(realization.Безнал){
-                        await SellsRemote.update({Прибыль: revenue*0.982, Дата: date}, {where: {Счетчик: item.Счетчик}})
+                        await SellsRemote.update({Прибыль: profit*0.982, Дата: date}, {where: {Счетчик: item.Счетчик}})
                     } else {
-                        await SellsRemote.update({Прибыль: revenue, Дата: date}, {where: {Счетчик: item.Счетчик}})
+                        await SellsRemote.update({Прибыль: profit, Дата: date}, {where: {Счетчик: item.Счетчик}})
                     }
                     if (product.product_in_stock<item.Количество){
                         extraProducts.push({
@@ -168,6 +172,19 @@ class RealizationContoller {
                         }
                     })
                 }
+            }
+            const discountedTotal = totalSum - realization.bonusPointsUsed - realization.discount
+
+            if (realization?.siteUserId){
+
+                let title = 'Начислены бонусы за покупку'
+                if (realization.bonusPointsUsed){
+                    title = `Начислено ${(discountedTotal*0.015).toFixed(2)} бонусов за покупку. Использовано ${realization.bonusPointsUsed} бонусов.`
+                }
+                if(realization.siteUserId){
+                    await OrderSite.update({status: "Выполнен"}, {where: {id: realization.siteUserId}})
+                }
+                await bonusService.addPoints(realization.siteUserId, discountedTotal*0.015, title, realization.siteOrderId, realization.bonusPointsUsed )
             }
             for (let extraProduct of extraProducts) {
                 await ExtraProductsLogsRemote.create({productId: extraProduct.id, name: extraProduct.name, qty: extraProduct.extraQTY, price: extraProduct.price})
@@ -285,6 +302,8 @@ class RealizationContoller {
     async updateOrderSiteCustomer (req, res) {
         try {
             const {siteUserId, siteOrderId ,realizationId, bonusPointsUsed} = req.body
+            const temp = await SellsCounterRemote.findOne({where: {Счетчик: realizationId}})
+            console.log({siteUserId, siteOrderId ,realizationId, bonusPointsUsed})
             await SellsCounterRemote.update({siteUserId, siteOrderId, bonusPointsUsed}, {where: {Счетчик: realizationId}}).then(() => {
                 return res.json("Установлен пользователь сайта")
             })
@@ -351,6 +370,7 @@ class RealizationContoller {
             console.log(e.message)
         }
     }
+
 
     async updateSellsItemPriceQty (req, res) {
         try {

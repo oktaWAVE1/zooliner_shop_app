@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Form} from "react-bootstrap";
 import {fetchUserBonus} from "../../http/siteAPI";
 import useDebounce from "../../hooks/useDebounce";
+import {updateRealizationSiteCustomer} from "../../http/realizationAPI";
 
-const RealizationBonusFeature = ({siteUser, setSiteUser, disabled, setAlertMessage}) => {
+const RealizationBonusFeature = ({siteUser, setSiteUser, disabled, setAlertMessage, realizationId}) => {
     const [userBonus, setUserBonus] = useState({});
     const setQTY = (e) => {
         if(e.target.value<0){
@@ -32,18 +33,23 @@ const RealizationBonusFeature = ({siteUser, setSiteUser, disabled, setAlertMessa
 
     useDebounce(async () => {
         if(siteUser.userId){
-            fetchUserBonus({userId: siteUser.userId}).then(data => {
+            fetchUserBonus({userId: siteUser.userId}).then(async(data) => {
                 if(data.status===404){
                     setAlertMessage({title: '', message: data.data.message, show: true, variant: 'danger'})
                     setUserBonus({})
                 } else {
+                   await updateRealizationSiteCustomer({
+                       siteUserId: siteUser.userId,
+                       bonusPointsUsed: siteUser.bonusPointsUsed,
+                       realizationId
+                   })
                     setUserBonus(data.data)
                 }
             })
         } else {
             setUserBonus({})
         }
-    }, 1000, [siteUser.userId])
+    }, 1000, [siteUser.userId, siteUser.bonusPointsUsed])
 
     return (
         <div>
@@ -58,7 +64,6 @@ const RealizationBonusFeature = ({siteUser, setSiteUser, disabled, setAlertMessa
                               placeholder={!userBonus?.id ? "Бонусов использовано..." : `Доступно: ${userBonus.currentQty}. Заморожено: ${userBonus.frozenPoints}`}
                               value={String(siteUser.bonusPointsUsed)==='0' ? '' : siteUser.bonusPointsUsed}
                               onChange={e => setQTY(e)} />
-                <button disabled={true} className="py-1 px-2">ПОДТВЕРДИТЬ</button>
             </Form>
             
         </div>

@@ -119,13 +119,13 @@ class ProductController {
                 const productList = []
                 products.forEach(p => {
                     if(!p?.children || p.children.length===0){
-                        if(p.product_in_stock>0){
+                        if(p.product_in_stock!==0){
                             const title = `${p.Наименование}, ${p["Наименование (крат опис)"]}`
                             productList.push({title, id: p.Код, stock: p.product_in_stock})
                         }
                     } else {
                         p.children.forEach(pc => {
-                            if(pc.product_in_stock>0 && pc.Наименование!=='развес 100 г.' && pc["Развесной пакет"]===false){
+                            if(pc.product_in_stock!==0 && pc.Наименование!=='развес 100 г.' && pc["Развесной пакет"]===false){
                                 const title = `${p.Наименование}, ${p["Наименование (крат опис)"]}, ${pc.Наименование}`
                                 productList.push({title, id: pc.Код, stock: pc.product_in_stock})
                             }
@@ -146,13 +146,13 @@ class ProductController {
                             {model: ProductRemote, as: "children"}
                         ]})
                     if(!p?.children || p.children.length===0){
-                        if(p.product_in_stock>0 && p.product_in_stock<100000){
+                        if(p.product_in_stock!==0 && p.product_in_stock<100000){
                             const title = `${p.Наименование}, ${p["Наименование (крат опис)"]}`
                             productList.push({title, id: p.Код, stock: p.product_in_stock})
                         }
                     } else {
                         p.children.forEach(pc => {
-                            if(pc.product_in_stock>0 && pc.product_in_stock<100000 && pc.Наименование!=='развес 100 г.' && pc["Развесной пакет"]===false){
+                            if(pc.product_in_stock!==0 && pc.product_in_stock<100000 && pc.Наименование!=='развес 100 г.' && pc["Развесной пакет"]===false){
                                 const title = `${p.Наименование}, ${p["Наименование (крат опис)"]}, ${pc.Наименование}`
                                 productList.push({title, id: pc.Код, stock: pc.product_in_stock})
                             }
