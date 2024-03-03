@@ -1,13 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {fetchStockProductsByBrand} from "../../http/productAPI";
-import {useParams} from "react-router-dom";
+import {fetchStockProducts} from "../../http/productAPI";
+import {useSearchParams} from "react-router-dom";
+import Loader from "../../UI/Loader/Loader";
 
-const ProductInStockBrandList = () => {
+const ProductInStockList = () => {
     const [products, setProducts] = useState([]);
-    const {id} = useParams()
+    const [loading, setLoading] = useState(true);
+    const [searchParams] = useSearchParams()
+    const brand = searchParams.get('brand')
+    const category = searchParams.get('category')
     useEffect(() => {
-        fetchStockProductsByBrand({id}).then(data => setProducts(data)).finally(() => setTimeout(() => window.print(), 1000))
+        setLoading(true)
+        fetchStockProducts({brand, category}).then(data => setProducts(data)).finally(() => {
+            setLoading(false)
+            setTimeout(() => window.print(), 1000)
+        })
     }, []);
+    if(loading) return <Loader />
     return (
         <div className="printStockByBrand">
             {products.length>0 &&
@@ -24,4 +33,4 @@ const ProductInStockBrandList = () => {
     );
 };
 
-export default ProductInStockBrandList;
+export default ProductInStockList;

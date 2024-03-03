@@ -27,8 +27,8 @@ const BrandList = () => {
 
             </Form.Select>
             {brand!=='0' &&
-                <div className="w-100 d-flex justify-content-center mt-3">
-                    <Link style={{textDecoration: "none"}} to={`/print/brand-stocks/${brand}`} target="_blank">
+                <div className="w-100 d-flex justify-content-center my-3 ">
+                    <Link style={{textDecoration: "none"}} to={`/print/stocks/?brand=${brand}`} target="_blank">
                         <span className="myBtn">РАСПЕЧАТАТЬ ТЕКУЩИЕ ОСТАТКИ</span>
                     </Link>
                 </div>

@@ -1,6 +1,6 @@
 const {Op} = require("sequelize");
 const ApiError = require("../error/ApiError");
-const {OrderSite, DeliveryMethodSite, PaymentMethodSite, OrderItemSite, BonusPointSite} = require("../models/modelSite");
+const {OrderSite, DeliveryMethodSite, PaymentMethodSite, OrderItemSite, BonusPointSite, CategorySite} = require("../models/modelSite");
 
 class siteController {
 
@@ -14,6 +14,16 @@ class siteController {
             ]})
 
         return res.json(orders)
+
+    }
+
+    async getCategories (req, res) {
+        const categories = await CategorySite.findAll({include: [
+                {model: CategorySite, as: 'parent'},
+                {model: CategorySite, as: 'children'}
+            ]})
+
+        return res.json(categories)
 
     }
 

@@ -7,7 +7,7 @@ import RealizationItemPage from "./pages/RealizationItemPage";
 import BarcodesPage from "./pages/BarcodesPage";
 import PriceTagsPage from "./pages/PriceTagsPage";
 import PrintTagsPage from "./pages/PrintTagsPage";
-import PrintBrandStocksPage from "./pages/PrintBrandStocksPage";
+import PrintStocksPage from "./pages/PrintStocksPage";
 import BrandStocksPage from "./pages/BrandStocksPage";
 import PrintOrderPage from "./pages/PrintOrderPage";
 import SireOrderPage from "./pages/SireOrderPage";
@@ -32,8 +32,8 @@ export const managerRoutes = [
     {path: '/price-tags', element: <PriceTagsPage />},
     {path: '/print/price-tags', element: <PrintTagsPage />},
     {path: '/print/order/:id', element: <PrintOrderPage />},
-    {path: '/print/brand-stocks/:id', element: <PrintBrandStocksPage />},
-    {path: '/brand-stocks', element: <BrandStocksPage />},
+    {path: '/print/stocks', element: <PrintStocksPage />},
+    {path: '/stocks', element: <BrandStocksPage />},
     {path: '/site/orders', element: <SireOrderPage />},
 ]
 
@@ -46,7 +46,7 @@ export const adminRoutes = [
     {path: '/price-tags', element: <PriceTagsPage />},
     {path: '/print/order/:id', element: <PrintOrderPage />},
     {path: '/print/price-tags', element: <PrintTagsPage />},
-    {path: '/print/brand-stocks/:id', element: <PrintBrandStocksPage />},
-    {path: '/brand-stocks', element: <BrandStocksPage />},
+    {path: '/print/stocks', element: <PrintStocksPage />},
+    {path: '/stocks', element: <BrandStocksPage />},
     {path: '/site/orders', element: <SireOrderPage />},
 ]

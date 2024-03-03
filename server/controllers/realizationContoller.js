@@ -1,7 +1,7 @@
 const {SellsCounterRemote, SellsRemote, ProductRemote, BarcodeRemote, DeliveryRemote, CustomersRemote,
     ExtraProductsLogsRemote
 } = require("../models/models");
-const {Op, DataTypes} = require("sequelize");
+const {Op} = require("sequelize");
 const ApiError = require("../error/ApiError");
 
 class RealizationContoller {

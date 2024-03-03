@@ -19,10 +19,11 @@ export const fetchProduct = async({id}) => {
     return data
 }
 
-export const fetchStockProductsByBrand = async({id}) => {
-    const {data} = await $authHost.get(`api/product/brand`, {
+export const fetchStockProducts = async({brand, category}) => {
+    const {data} = await $authHost.get(`api/product/stocks`, {
         params: {
-            id
+            brand,
+            category
         }
     })
     return data

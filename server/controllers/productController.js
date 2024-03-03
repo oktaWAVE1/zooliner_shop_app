@@ -1,7 +1,8 @@
-const {ProductRemote, BarcodeRemote, ProductTagRemote, ManufacturersRemote} = require("../models/models");
+const {ProductRemote, BarcodeRemote, ManufacturersRemote} = require("../models/models");
 const {fuseSearch} = require("../service/fuseSearch");
 const {Op} = require("sequelize");
 const ApiError = require("../error/ApiError");
+const {ProductSite, CategorySite} = require("../models/modelSite");
 
 class ProductController {
 
@@ -104,32 +105,63 @@ class ProductController {
         }
     }
 
-    async getStockProductsByManufacturer (req, res, next) {
-        const {id} = req.query
+    async getStockProducts (req, res, next) {
+        const {brand, category} = req.query
+        console.log(category)
         try {
-            const products = await ProductRemote.findAll({
-                include: [
-                    {model: ProductRemote, as: 'children'},
-                    {model: ManufacturersRemote, where: {id_производителя: id}},
-                ]})
+            if (brand){
+                const products = await ProductRemote.findAll({
+                    include: [
+                        {model: ProductRemote, as: 'children'},
+                        {model: ManufacturersRemote, where: {id_производителя: brand}},
+                    ]})
 
-            const productList = []
-            products.forEach(p => {
-                if(!p?.children || p.children.length===0){
-                    if(p.product_in_stock>0){
-                        const title = `${p.Наименование}, ${p["Наименование (крат опис)"]}`
-                        productList.push({title, id: p.Код, stock: p.product_in_stock})
-                    }
-                } else {
-                    p.children.forEach(pc => {
-                        if(pc.product_in_stock>0 && pc.Наименование!=='развес 100 г.' && pc["Развесной пакет"]===false){
-                            const title = `${p.Наименование}, ${p["Наименование (крат опис)"]}, ${pc.Наименование}`
-                            productList.push({title, id: pc.Код, stock: pc.product_in_stock})
+                const productList = []
+                products.forEach(p => {
+                    if(!p?.children || p.children.length===0){
+                        if(p.product_in_stock>0){
+                            const title = `${p.Наименование}, ${p["Наименование (крат опис)"]}`
+                            productList.push({title, id: p.Код, stock: p.product_in_stock})
                         }
-                    })
+                    } else {
+                        p.children.forEach(pc => {
+                            if(pc.product_in_stock>0 && pc.Наименование!=='развес 100 г.' && pc["Развесной пакет"]===false){
+                                const title = `${p.Наименование}, ${p["Наименование (крат опис)"]}, ${pc.Наименование}`
+                                productList.push({title, id: pc.Код, stock: pc.product_in_stock})
+                            }
+                        })
+                    }
+                })
+                return res.json(productList)
+            }
+
+            if (category){
+                const productsSite = await ProductSite.findAll({where: {productId: 0}, include: [
+                        {model: CategorySite, as: "category", where: {id: category}}
+                    ]})
+
+                const productList = []
+                for (const ps of productsSite){
+                    const p = await ProductRemote.findOne({where: {Код: ps.id}, include: [
+                            {model: ProductRemote, as: "children"}
+                        ]})
+                    if(!p?.children || p.children.length===0){
+                        if(p.product_in_stock>0 && p.product_in_stock<100000){
+                            const title = `${p.Наименование}, ${p["Наименование (крат опис)"]}`
+                            productList.push({title, id: p.Код, stock: p.product_in_stock})
+                        }
+                    } else {
+                        p.children.forEach(pc => {
+                            if(pc.product_in_stock>0 && pc.product_in_stock<100000 && pc.Наименование!=='развес 100 г.' && pc["Развесной пакет"]===false){
+                                const title = `${p.Наименование}, ${p["Наименование (крат опис)"]}, ${pc.Наименование}`
+                                productList.push({title, id: pc.Код, stock: pc.product_in_stock})
+                            }
+                        })
+                    }
                 }
-            })
-        return res.json(productList)
+
+                return res.json(productList)
+            }
 
         } catch (e) {
             console.log(e)

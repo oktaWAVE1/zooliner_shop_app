@@ -22,6 +22,11 @@ export const fetchUserBonus = async({userId}) => {
     return data
 }
 
+export const fetchSiteCategories = async() => {
+    const {data} = await $authHost.get(`api/site/category`)
+    return data
+}
+
 
 
 

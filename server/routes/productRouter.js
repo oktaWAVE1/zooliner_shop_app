@@ -9,7 +9,7 @@ router.get('/popular', checkRole(['ADMIN, MANAGER']), productController.getPopul
 router.get('/code', checkRole(['ADMIN, MANAGER']), productController.getProductByCode)
 router.get('/', checkRole(['ADMIN, MANAGER']),productController.getAll)
 router.get('/search', checkRole(['ADMIN, MANAGER']),productController.getSearchedProducts)
-router.get('/brand', checkRole(['ADMIN, MANAGER']),productController.getStockProductsByManufacturer)
+router.get('/stocks', checkRole(['ADMIN, MANAGER']),productController.getStockProducts)
 
 
 module.exports = router

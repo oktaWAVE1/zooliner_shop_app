@@ -5,6 +5,7 @@ const checkRole = require('../middleware/CheckRoleMiddleware')
 
 
 router.get('/', checkRole(['ADMIN, MANAGER']),siteController.getUnreadOrders)
+router.get('/category', checkRole(['ADMIN, MANAGER']),siteController.getCategories)
 router.get('/userbonus/:userId', checkRole(['ADMIN, MANAGER']),siteController.getUserBonus)
 router.get('/current/:id', checkRole(['ADMIN, MANAGER']),siteController.getOrder)
 router.post('/read', checkRole(['ADMIN, MANAGER']),siteController.setOrderRead)
