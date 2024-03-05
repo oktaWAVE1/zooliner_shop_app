@@ -153,12 +153,12 @@ class RealizationContoller {
                                     if (wpc.Наименование.toLowerCase()=== 'развес 100 г.'){
                                         await ProductRemote.update({product_in_stock: Math.floor((product.product_in_stock)/100)}, {where: {Код: wpc.Код}})
                                     }
-                                    if (wpc['Развесной пакет']===true){
+                                    if (wpc['Развесной пакет']!=0){
                                         await ProductRemote.update({product_in_stock: Math.floor((product.product_in_stock)/weightProduct.parent.Вес)}, {where: {Код: wpc.Код}})
                                     }
                                 }
                             }
-                            if (product['Развесной пакет']===true){
+                            if (product['Развесной пакет']!=0){
                                 for (let wpc of weightProduct.parent.children){
                                     if(wpc.Наименование.toLowerCase()==='развес г.'){
                                         await ProductRemote.update({product_in_stock: ((wpc.product_in_stock-weightProduct.parent.Вес))}, {where: {Код: wpc.Код}})

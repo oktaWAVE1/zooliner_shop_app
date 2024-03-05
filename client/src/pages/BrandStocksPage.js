@@ -6,7 +6,7 @@ import CategoriesList from "../components/features/CategoriesList";
 const BrandStocksPage = () => {
     return (
         <Container>
-            <h3 className="text-center">Печать остатков по бренду: </h3>
+            <h3 className="text-center">Печать остатков:</h3>
             <BrandList />
             <CategoriesList />
 

@@ -7,6 +7,7 @@ const router = require('./routes')
 const path = require("path");
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 const cookieParser = require('cookie-parser')
+const {update} = require('./service/weight-product-updater')
 
 
 const port = process.env.PORT || 5000
@@ -29,6 +30,8 @@ app.use(express.static(path.resolve(__dirname, 'static')))
 app.use('/api', router)
 
 app.use(errorHandler)
+
+const weightUpdater = setInterval(() => update(1), 1000*60*20)
 
 const start = async () => {
     try{
