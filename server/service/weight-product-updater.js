@@ -29,18 +29,7 @@ const update = async (timeOffset) => {
                         }
                     }
                 }
-                if (product['Развесной пакет']!=0){
 
-                    for (let wpc of weightProduct.parent.children){
-                        if(wpc.Наименование.toLowerCase()==='развес г.'){
-                            await ProductRemote.update({product_in_stock: ((wpc.product_in_stock-weightProduct.parent.Вес))}, {where: {Код: wpc.Код}})
-                        }
-                        if (wpc.Наименование.toLowerCase()=== 'развес 100 г.'){
-                            await ProductRemote.update({product_in_stock: ((wpc.product_in_stock-(weightProduct.parent.Вес/100)))}, {where: {Код: wpc.Код}})
-                        }
-
-                    }
-                }
             }
         }
     }).then(() => {
