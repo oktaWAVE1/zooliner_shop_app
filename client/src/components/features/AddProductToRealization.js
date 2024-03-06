@@ -27,7 +27,8 @@ const AddProductToRealization = ({id, setRefresh, disabled, payment, setAlertMes
         if(e.key=== 'Enter'){
             await addNewRealizationItem({
                 realizationId: id,
-                barcode: barcode
+                barcode: barcode,
+                refund
             }).then((data) => {
                 if(data?.message){
                     setAlertMessage({title: '', message: data.message, show: true, variant: 'danger'})
