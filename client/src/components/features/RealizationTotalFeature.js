@@ -27,8 +27,8 @@ const RealizationTotalFeature = observer(({total, discount, date, delivery, real
             <div className="d-flex gap-3 w-auto mt-3 justify-content-end realizationTotalSums">
                 <div>{delivery>0 && `Стоимость доставки: ${delivery} ₽`}</div>
                 <div>{(discount+siteUser.bonusPointsUsed)>0 && `Скидка: ${(discount+Number(siteUser.bonusPointsUsed))} ₽`}</div>
-                <div>{total !== discountedTotal && `Стоимость товара: ${Math.ceil(total)} ₽`}</div>
-                <div style={{color: "darkred"}}>Итого: {Math.ceil(discountedTotal)} ₽</div>
+                <div>{total !== discountedTotal && `Стоимость товара: ${Math.floor(total)} ₽`}</div>
+                <div style={{color: "darkred"}}>Итого: {Math.floor(discountedTotal)} ₽</div>
             </div>
         </div>
     );
