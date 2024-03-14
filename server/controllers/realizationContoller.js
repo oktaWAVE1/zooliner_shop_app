@@ -141,7 +141,7 @@ class RealizationContoller {
                     }
                     await product.update({product_in_stock: product.product_in_stock-item.Количество}, {where: {Код: product.Код}}).then(async() => {
 
-                        if (product.Наименование.toLowerCase()==='развес г.' || product['Развесной пакет']===true){
+                        if (product.Наименование.toLowerCase()==='развес г.' || product['Развесной пакет']!=0){
                             const weightProduct = await ProductRemote.findOne({where: {Код: product.Код}, include: [
                                     {model: ProductRemote, as: 'parent', include: [
                                             {model: ProductRemote, as: 'children'},
@@ -161,10 +161,10 @@ class RealizationContoller {
                             if (product['Развесной пакет']!=0){
                                 for (let wpc of weightProduct.parent.children){
                                     if(wpc.Наименование.toLowerCase()==='развес г.'){
-                                        await ProductRemote.update({product_in_stock: ((wpc.product_in_stock-weightProduct.parent.Вес))}, {where: {Код: wpc.Код}})
+                                        await ProductRemote.update({product_in_stock: ((wpc.product_in_stock-(weightProduct.parent.Вес * item.Количество)))}, {where: {Код: wpc.Код}})
                                     }
                                     if (wpc.Наименование.toLowerCase()=== 'развес 100 г.'){
-                                        await ProductRemote.update({product_in_stock: ((wpc.product_in_stock-(weightProduct.parent.Вес/100)))}, {where: {Код: wpc.Код}})
+                                        await ProductRemote.update({product_in_stock: ((wpc.product_in_stock-((weightProduct.parent.Вес * item.Количество)/100)))}, {where: {Код: wpc.Код}})
                                     }
 
                                 }
