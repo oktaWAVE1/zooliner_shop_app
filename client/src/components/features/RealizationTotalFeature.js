@@ -5,6 +5,7 @@ import {Context} from "../../index";
 import {Link} from "react-router-dom";
 
 const RealizationTotalFeature = observer(({total, discount, date, delivery, realizationDone, id, disabled, setRefresh, setAlertMessage, setExtraProducts, siteUser}) => {
+    console.log(delivery)
     const discountedTotal = total - discount + delivery - Number(siteUser.bonusPointsUsed)
     const {loading, realizations} = useContext(Context)
     const confirmRealization = async () => {

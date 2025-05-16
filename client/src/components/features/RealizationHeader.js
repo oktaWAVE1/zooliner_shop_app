@@ -64,10 +64,11 @@ const RealizationHeader = ({id, refresh, setRefresh}) => {
             }, 0)
             const discountedTotal = itemsTotal-data?.discount
             setTotal(itemsTotal)
-            if(discountedTotal <= data?.deliveryRemote?.freeSum) {
+            if(discountedTotal < data?.deliveryRemote?.freeSum) {
                 setDeliveryCost(data?.deliveryRemote.cost)
             } else {
                 setDeliveryCost(0)
+
             }
             setDate('')
             setRefund(data.refund)
