@@ -26,14 +26,14 @@ const ProductSearchFeature = observer(({setIsLoading, formId, productId, setProd
             }} value={productId}>
                 <option value={'0'}>Товар</option>
                 {products.products?.length > 0 &&
-                    products.products.filter(p => (!p.children || p?.children.length === 0) && !(p.Наименование.toLowerCase().includes('удален'))).map(p =>
+                    products.products.filter(p => (!p.children || p?.children.length === 0) && !(p.Наименование?.toLowerCase().includes('удален'))).map(p =>
                         <option key={p.Код} value={p.Код}>
                             {p.Наименование}, {p['Наименование (крат опис)']}
                         </option>
                     )
                 }
                 {products.products &&
-                        products.products.filter(p => !(p.Наименование.toLowerCase().includes('удален'))).map(p =>
+                        products.products.filter(p => !(p.Наименование?.toLowerCase().includes('удален'))).map(p =>
                             p.children.filter(pc => pc.Наименование!=="развес 100 г." ).map(pc =>
                                 <option key={pc.Код} value={pc.Код}>
                                     {p.Наименование}, {p['Наименование (крат опис)']}, {pc.Наименование}
