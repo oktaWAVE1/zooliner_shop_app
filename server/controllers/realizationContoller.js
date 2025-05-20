@@ -206,8 +206,9 @@ class RealizationContoller {
         try{
             let date = new Date()
             const today = `${date.getFullYear()}-${String(date.getMonth()+1).length>1 ? date.getMonth()+1 : `0${date.getMonth()+1}`}-${String(date.getDate()).length>1 ? date.getDate() : `0${date.getDate()}`}`
-            console.log(today)
+
             let {realizationId, itemId, barcode, qty, refund} = req.body
+            if(!qty) qty=1
             if(barcode) {
                 const productId = await BarcodeRemote.findOne({where: {Штрихкод: barcode}})
                 itemId = productId.Код
@@ -237,8 +238,8 @@ class RealizationContoller {
                 if (product?.children?.length>0){
                     return next(ApiError.badRequest("У товара есть дочерние, нельзя добавить"))
                 }
-                let productPrice = product.Цена
-                let productSum = product.Цена*qty
+                let productPrice = Number(product.Цена)
+                let productSum = productPrice*qty
                 let title = product?.parent?.Код ? `${product.parent.Наименование} ${product.parent['Наименование (крат опис)']} ${product.Наименование}`:
                     `${product.Наименование} ${product['Наименование (крат опис)']}`
 
@@ -247,13 +248,15 @@ class RealizationContoller {
                         if(pr.Наименование === 'развес г.'){
                             qty = qty ? qty * 100 : 100
                             itemId = pr.Код
-                            productPrice = pr.Цена
+                            productPrice = Number(pr.Цена)
                             productSum = productPrice*qty
                             title =  `${product.parent.Наименование} ${product.parent['Наименование (крат опис)']} ${pr.Наименование}`
                         }
                     })
                 }
-
+                console.log(qty)
+                console.log(productPrice)
+                console.log(productSum)
 
                 await SellsRemote.create({
                     "Счетчик": lastRealizationSell[0].Счетчик+1,
