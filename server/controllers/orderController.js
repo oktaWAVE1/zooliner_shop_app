@@ -11,7 +11,7 @@ class OrderController {
 
     async addOrder (req, res) {
         const {Описание} = req.body
-        const order = await OrderRemote.create({Описание})
+        const order = await OrderRemote.create({Описание, Выполнено: false})
         return res.json(order)
     }
 
