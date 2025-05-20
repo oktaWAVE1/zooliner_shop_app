@@ -86,7 +86,11 @@ class RealizationContoller {
         })
         const realization = realizations[0]
         if (realization?.sellsRemotes?.length > 0 || realization.Проведение===true) {
-            await SellsCounterRemote.create({Счетчик: parseInt(realization.Счетчик) + 1, refund: false}).then((real) => {
+            let context = {
+                Счетчик: parseInt(realization.Счетчик) + 1, refund: false
+            }
+            context['Код магазина'] = 'PA60'
+            await SellsCounterRemote.create({context}).then((real) => {
                 return res.json({id: parseInt(real.Счетчик)})
             })
 
