@@ -90,7 +90,7 @@ class RealizationContoller {
                 Счетчик: parseInt(realization.Счетчик) + 1, refund: false
             }
             context['Код магазина'] = 'PA60'
-            await SellsCounterRemote.create({context}).then((real) => {
+            await SellsCounterRemote.create(context).then((real) => {
                 return res.json({id: parseInt(real.Счетчик)})
             })
 
