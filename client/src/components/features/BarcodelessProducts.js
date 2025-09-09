@@ -21,21 +21,6 @@ const BarcodelessProducts = () => {
         fetchPopularProducts().then(data => {
             setProducts(data)
 
-            for (const item of data){
-
-                for (const product of item.items){
-                    if (product.children?.length>0){
-                        for (const child of product.children){
-                            console.log(createEAN8(String(child.Код).padStart(7, "5")))
-                        }
-                    }
-                    else{
-
-                        console.log(createEAN8(String(product.Код).padStart(7, "5")))
-                    }
-                }
-            }
-
 
         })
 
