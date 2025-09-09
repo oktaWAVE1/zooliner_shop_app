@@ -62,6 +62,8 @@ class ProductController {
             include: [
                 {model: ProductRemote, as: 'children'},
             ]})
+
+
         const products = [
             {key: 'Развес', items: weight},
             {key: 'Поштучно', items: piece},
@@ -69,7 +71,7 @@ class ProductController {
             {key: 'Ecopremium', items: ecopremium},
             {key: 'Силикагель', items: silicagel},
             {key: 'Cat step', items: cat_step},
-            {key: 'Барск', items: barsik},
+            {key: 'Барсик', items: barsik},
             {key: 'PiPi Bent', items: pipi_bent},
             {key: 'N1', items: n1},
         ]
