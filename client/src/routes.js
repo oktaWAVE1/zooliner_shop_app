@@ -11,6 +11,7 @@ import PrintStocksPage from "./pages/PrintStocksPage";
 import BrandStocksPage from "./pages/BrandStocksPage";
 import PrintOrderPage from "./pages/PrintOrderPage";
 import SireOrderPage from "./pages/SireOrderPage";
+import BarcodelessProductsPage from "./pages/BarcodelessProductsPage";
 
 export const publicRoutes = [
     {path: '/', element: <IndexPage/>},
@@ -44,6 +45,7 @@ export const adminRoutes = [
     {path: '/orders', element: <OrdersPage />},
     {path: '/customers', element: <CustomersPage />},
     {path: '/barcodes', element: <BarcodesPage />},
+    {path: '/barcodeless', element: <BarcodelessProductsPage />},
     {path: '/price-tags', element: <PriceTagsPage />},
     {path: '/print/order/:id', element: <PrintOrderPage />},
     {path: '/print/price-tags', element: <PrintTagsPage />},

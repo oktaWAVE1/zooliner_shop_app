@@ -54,7 +54,7 @@ const RealizationsListItem = ({realization}) => {
                             <div>{s['Наименование']}</div>
                             <div>{s['Цена']}</div>
                             <div>{s['Количество']}</div>
-                            <div>{s['Цена']*s['Количество']}</div>
+                            <div>{Math.round(s['Цена']*s['Количество'])}</div>
                         </div>
                     )
                 }

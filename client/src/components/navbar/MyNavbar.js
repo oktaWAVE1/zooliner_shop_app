@@ -41,6 +41,7 @@ const MyNavbar = observer(() => {
                             {(user.user?.role==='MANAGER' || user.user?.role==="ADMIN") &&
                                 <Nav>
                                     <Link className={cl.navbarItem} to={'/manager/realizations'}>Список реализаций</Link>
+                                    <Link className={cl.navbarItem} to={'/barcodeless'}>ШК</Link>
                                     <Link className={cl.navbarItem} to={'/orders'}>Заказы</Link>
                                     <Link className={cl.navbarItem} to={'/customers'}>Клиенты</Link>
                                     <Link className={cl.navbarItem} to={'/barcodes'}>Штрихкоды</Link>
