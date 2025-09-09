@@ -31,6 +31,7 @@ export const managerRoutes = [
     {path: '/orders', element: <OrdersPage />},
     {path: '/customers', element: <CustomersPage />},
     {path: '/barcodes', element: <BarcodesPage />},
+    {path: '/barcodeless', element: <BarcodelessProductsPage />},
     {path: '/price-tags', element: <PriceTagsPage />},
     {path: '/print/price-tags', element: <PrintTagsPage />},
     {path: '/print/order/:id', element: <PrintOrderPage />},
