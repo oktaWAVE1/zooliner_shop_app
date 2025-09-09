@@ -10,6 +10,14 @@ const BarcodelessProducts = () => {
         fetchPopularProducts().then(data => {
             setProducts(data)
 
+            for (const item of data){
+
+                for (const product of item.items){
+                    console.log(String(product.Код))
+                }
+            }
+
+
         })
 
     }, []);
@@ -40,7 +48,7 @@ const BarcodelessProducts = () => {
                                                                     <Accordion.Item eventKey={index}>
                                                                         <Accordion.Header><div className="text-center w-100 headerText">{pc.Наименование}</div></Accordion.Header>
                                                                         <Accordion.Body>
-                                                                            <Barcode value={String(pc.Код).padStart(12, "0")} format={"EAN13"} />
+                                                                            <Barcode value={String(pc.Код).padStart(12, "5")} format={"EAN13"} />
                                                                         </Accordion.Body>
                                                                     </Accordion.Item>
                                                                 </Accordion>
@@ -48,7 +56,7 @@ const BarcodelessProducts = () => {
 
                                                         :
 
-                                                    <Barcode value={String(p.Код).padStart(12, "0")} format={"EAN13"} />
+                                                    <Barcode value={String(p.Код).padStart(12, "5")} format={"EAN13"} />
                                                     }
                                                 </div>
                                             </Accordion.Body>
