@@ -6,9 +6,36 @@ import Barcode from "react-barcode";
 const BarcodelessProducts = () => {
     const [products, setProducts] = useState([]);
     const [currentProducts, setCurrentProducts] = useState({key: '', items: []});
+    function createEAN8(ean7Digits) {
+
+        let sum = 0;
+        for (let i = 0; i < ean7Digits.length; i++) {
+            const digit = parseInt(ean7Digits[i]);
+            sum += (i % 2 === 0) ? digit * 3 : digit * 1;
+        }
+        const remainder = sum % 10;
+        return (remainder === 0) ? `${ean7Digits}0` : `${ean7Digits}${10 - remainder}`;
+    }
+
     useEffect(() => {
         fetchPopularProducts().then(data => {
             setProducts(data)
+
+            for (const item of data){
+
+                for (const product of item.items){
+                    if (product.children?.length>0){
+                        for (const child of product.children){
+                            console.log(createEAN8(String(child.Код).padStart(7, "5")))
+                        }
+                    }
+                    else{
+
+                        console.log(createEAN8(String(product.Код).padStart(7, "5")))
+                    }
+                }
+            }
+
 
         })
 
@@ -40,7 +67,7 @@ const BarcodelessProducts = () => {
                                                                     <Accordion.Item eventKey={index}>
                                                                         <Accordion.Header><div className="text-center w-100 headerText">{pc.Наименование}</div></Accordion.Header>
                                                                         <Accordion.Body>
-                                                                            <Barcode value={String(pc.Код).padStart(12, "0")} format={"EAN13"} />
+                                                                            <Barcode value={createEAN8(String(pc.Код).padStart(7, "5"))} format={"EAN8"} />
                                                                         </Accordion.Body>
                                                                     </Accordion.Item>
                                                                 </Accordion>
@@ -48,7 +75,7 @@ const BarcodelessProducts = () => {
 
                                                         :
 
-                                                    <Barcode value={String(p.Код).padStart(12, "0")} format={"EAN13"} />
+                                                    <Barcode value={createEAN8(String(p.Код).padStart(7, "5"))} format={"EAN8"}  />
                                                     }
                                                 </div>
                                             </Accordion.Body>
