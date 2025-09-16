@@ -31,6 +31,14 @@ app.use(function(req, res, next) {
 app.use(express.static(path.resolve(__dirname, 'static')))
 app.use('/api', router)
 
+
+const lifeposCorsOptions = {
+    origin: 'https://api.life-pos.ru',
+    methods: ['POST'],
+    optionsSuccessStatus: 200
+};
+app.post('/api/realization/lifepos', cors(lifeposCorsOptions))
+
 app.use(errorHandler)
 
 const weightUpdater = setInterval(() => update(1), 1000*60*20)
