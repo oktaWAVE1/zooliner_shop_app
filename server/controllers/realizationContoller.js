@@ -78,6 +78,11 @@ class RealizationContoller {
         return res.json(realization)
     }
 
+    async getLifePosRealization(req, res) {
+        console.log(req.body)
+        return res.status(200)
+    }
+
     async newRealization (req, res) {
         const realizations = await SellsCounterRemote.findAll({
             limit: 1, order: [['Счетчик', 'DESC']], include: [

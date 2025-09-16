@@ -8,6 +8,8 @@ const path = require("path");
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 const cookieParser = require('cookie-parser')
 const {update} = require('./service/weight-product-updater')
+const axios = require('axios');
+
 
 
 const port = process.env.PORT || 5000
@@ -33,10 +35,24 @@ app.use(errorHandler)
 
 const weightUpdater = setInterval(() => update(1), 1000*60*20)
 
+
+
+
 const start = async () => {
     try{
         await sequelize.authenticate()
         await sequelize.sync()
+        // await axios.get(`https://api.life-pos.ru/orgs/${process.env.LIFE_POS_ORG_ID}/deals/sales`, {headers: {
+        //         Accept: "*/*",
+        //         Authorization: `Bearer ${process.env.LIFE_POS_API_KEY}`
+        //     }}) .then((response) => {
+        //     console.log((response.data));
+        // })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+
+
 
         app.listen(port, () => console.log(`Server's started on port: ${port}`))
     } catch (e) {
