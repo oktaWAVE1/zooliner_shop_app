@@ -44,23 +44,10 @@ app.use(errorHandler)
 const weightUpdater = setInterval(() => update(1), 1000*60*20)
 
 
-
-
 const start = async () => {
     try{
         await sequelize.authenticate()
         await sequelize.sync()
-        // await axios.patch(`https://api.life-pos.ru/v6/orgs/${process.env.LIFE_POS_ORG_ID}`, {headers: {
-        //         Accept: "*/*",
-        //         Authorization: `Bearer ${process.env.LIFE_POS_API_KEY}`
-        //     }}) .then((response) => {
-        //     console.log((response.data));
-        // })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     });
-
-
 
         app.listen(port, () => console.log(`Server's started on port: ${port}`))
     } catch (e) {

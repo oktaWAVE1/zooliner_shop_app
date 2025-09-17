@@ -79,8 +79,15 @@ class RealizationContoller {
     }
 
     async getLifePosRealization(req, res) {
-        console.log(req.body)
-        return res.status(200)
+        try{
+            console.log("*********************notification**************")
+            console.log(req.body)
+            return res.status(200)
+
+        } catch (e) {
+            console.log("***********************notification error*****************")
+            console.log(e)
+        }
     }
 
     async newRealization (req, res) {

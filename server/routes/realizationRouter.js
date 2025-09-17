@@ -11,7 +11,7 @@ router.get('/today_deliveries', checkRole(['ADMIN, MANAGER']),realizationControl
 router.get('/new', checkRole(['ADMIN, MANAGER']),realizationController.newRealization)
 router.get('/current', checkRole(['ADMIN, MANAGER']),realizationController.getRealizationsDateRange)
 router.post('/add', checkRole(['ADMIN, MANAGER']),realizationController.addRealizationItem)
-router.post('/lifepos', checkRole(['ADMIN, MANAGER']),realizationController.getLifePosRealization)
+router.post('/lifepos', realizationController.getLifePosRealization)
 router.post('/confirm', checkRole(['ADMIN, MANAGER']),realizationController.confirmRealization)
 router.delete('/delete/:id', checkRole(['ADMIN, MANAGER']),realizationController.delRealizationItem)
 router.patch('/delivery', checkRole(['ADMIN, MANAGER']),realizationController.updateDeliveryMethod)
