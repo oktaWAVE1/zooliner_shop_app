@@ -27,6 +27,11 @@ class ProductController {
             include: [
                 {model: ProductRemote, as: 'parent'},
             ]})
+        const pieces = await ProductRemote.findAll({
+            where: {product_in_stock: {[Op.gt]: 0}},
+            include: [
+                {model: ProductRemote, as: 'parent', where: {'Наименование (крат опис)': {[Op.substring]: '1 шт'}}},
+            ]})
         const cat_step = await ProductRemote.findAll({
             where: {Наименование: 'CAT STEP'},
             include: [
@@ -66,7 +71,7 @@ class ProductController {
 
         const products = [
             {key: 'Развес', items: weight},
-            {key: 'Поштучно', items: piece},
+            {key: 'Поштучно', items: [...piece, ...pieces]},
             {key: 'Noname', items: noname},
             {key: 'Ecopremium', items: ecopremium},
             {key: 'Силикагель', items: silicagel},
