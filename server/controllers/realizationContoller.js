@@ -82,7 +82,7 @@ class RealizationContoller {
         try{
             console.log("*********************notification**************")
             console.log(req.body)
-            return res.status(200)
+            return res.json({status: "success"})
 
         } catch (e) {
             console.log("***********************notification error*****************")
