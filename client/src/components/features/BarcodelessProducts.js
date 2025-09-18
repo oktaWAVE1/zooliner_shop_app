@@ -3,19 +3,10 @@ import {fetchPopularProducts} from "../../http/productAPI";
 import {Accordion} from "react-bootstrap";
 import Barcode from "react-barcode";
 
-const BarcodelessProducts = () => {
+const BarcodelessProducts = ({createEAN8}) => {
     const [products, setProducts] = useState([]);
     const [currentProducts, setCurrentProducts] = useState({key: '', items: []});
-    function createEAN8(ean7Digits) {
 
-        let sum = 0;
-        for (let i = 0; i < ean7Digits.length; i++) {
-            const digit = parseInt(ean7Digits[i]);
-            sum += (i % 2 === 0) ? digit * 3 : digit * 1;
-        }
-        const remainder = sum % 10;
-        return (remainder === 0) ? `${ean7Digits}0` : `${ean7Digits}${10 - remainder}`;
-    }
 
     useEffect(() => {
         fetchPopularProducts().then(data => {
