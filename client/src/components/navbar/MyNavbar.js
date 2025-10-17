@@ -51,6 +51,12 @@ const MyNavbar = observer(() => {
                                 </Nav>
                             }
 
+                            {user.user?.role==="ADMIN" &&
+                                <Nav>
+                                    <Link className={siteOrders?.siteOrders?.length>0 ? [cl.navbarItem, 'internetOrdersLink'].join(' ') : cl.navbarItem} to={'/admin/orderList'}>OrderList<span>{siteOrders?.siteOrders?.length>0 && siteOrders?.siteOrders?.length}</span></Link>
+                                    <Link className={siteOrders?.siteOrders?.length>0 ? [cl.navbarItem, 'internetOrdersLink'].join(' ') : cl.navbarItem} to={'/admin/invoice'}>Invoice<span>{siteOrders?.siteOrders?.length>0 && siteOrders?.siteOrders?.length}</span></Link>
+                                </Nav>
+                            }
                             {user.isAuth && <Nav className="d-flex justify-content-center align-items-start logoButtons">
 
                                 <div onClick={() => logout()} className={[cl.logout_btn, cl.navbarItem].join(" ")}>

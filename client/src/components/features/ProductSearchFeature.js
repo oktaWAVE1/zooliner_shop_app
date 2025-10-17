@@ -16,7 +16,7 @@ const ProductSearchFeature = observer(({setIsLoading, formId, productId, setProd
         } else {
             products.setProducts([])
         }
-    }, 1000, [query])
+    }, 2000, [query])
     useDebounce(() => setProductId(0), 50, [query])
     return (
         <Form id={`ProductSearchForm-${formId}`} className="mt-1">

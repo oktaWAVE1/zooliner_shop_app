@@ -28,17 +28,17 @@ const RealizationsTotal = observer(() => {
 
         const deliverySum = curRealization.deliveryId < 1 ? 0 :
             curRealization.deliveryRemote?.freeSum <= saleSum ? 0 : curRealization.deliveryRemote?.cost
-        salesTotal += saleSum - curRealization.discount + deliverySum
+        salesTotal += saleSum - curRealization.discount + deliverySum - curRealization?.bonusPointsUsed
         if(curRealization.Безнал){
-            cardTotal += saleSum - curRealization.discount + deliverySum
+            cardTotal += saleSum - curRealization.discount + deliverySum - curRealization?.bonusPointsUsed
         } else {
-            cashTotal += saleSum - curRealization.discount + deliverySum
+            cashTotal += saleSum - curRealization.discount + deliverySum - curRealization?.bonusPointsUsed
         }
         if(curRealization.deliveryId>0 && curRealization.Безнал){
-            deliveryCardTotal += saleSum - curRealization.discount + deliverySum
+            deliveryCardTotal += saleSum - curRealization.discount + deliverySum - curRealization?.bonusPointsUsed
         }
         if(curRealization.deliveryId>0 && !(curRealization.Безнал===true)){
-            deliveryCashTotal += saleSum - curRealization.discount + deliverySum
+            deliveryCashTotal += saleSum - curRealization.discount + deliverySum - curRealization?.bonusPointsUsed
         }
 
     }

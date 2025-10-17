@@ -8,13 +8,14 @@ const RealizationsListItem = ({realization}) => {
     const totalItems = Math.round(realization.sellsRemotes.reduce((accum, current) => accum + (current.Цена * current.Количество), 0), 0)
     const deliverySum = realization.deliveryId < 1 ? 0 :
         realization.deliveryRemote?.freeSum <= totalItems ? 0 : realization.deliveryRemote?.cost
-    const total = totalItems + deliverySum - realization.discount
+
+    const total = totalItems + deliverySum - realization.discount - realization?.bonusPointsUsed
     return (
         <Accordion.Item eventKey={realization.Счетчик}>
             <Accordion.Header>
                 <div className="realizationsListItem">
                     <div>
-                        {date.toLocaleString('ru-RU', {timeZone: "Europe/London"})}
+                        {date.toLocaleString('ru-RU', {timeZone: "Europe/Moscow"})}
                     </div>
                     <div>
                         <b>{realization?.Счетчик}{realization.deliveryId>0 && <span className="mx-2"><Delivery/></span>}</b>

@@ -52,3 +52,13 @@ export const fetchPopularProducts = async() => {
     return data
 }
 
+export const fetchSKUList = async() => {
+    const {data} = await $authHost.get(`api/product/SKUList`)
+    return data
+}
+
+export const updateProductPrice = async({id, price}) => {
+    const {data} = await $authHost.patch(`api/product/price`, {id, price})
+    return data
+}
+
