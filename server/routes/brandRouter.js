@@ -3,7 +3,7 @@ const router = new Router()
 const brandController = require('../controllers/brandController')
 const checkRole = require('../middleware/CheckRoleMiddleware')
 
-router.get('/', checkRole(['ADMIN, MANAGER']),brandController.getBrands)
+router.get('/', checkRole(['ADMIN', 'MANAGER']),brandController.getBrands)
 
 
 

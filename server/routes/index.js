@@ -9,6 +9,7 @@ const barcodeRouter = require('./barcodeRouter')
 const priceTagRouter = require('./pricetagRouter')
 const brandRouter = require('./brandRouter')
 const siteRouter = require('./siteRouter')
+const invoiceRouter = require('./productInvoicingRouter')
 
 
 router.use('/user', userRouter)
@@ -20,5 +21,6 @@ router.use('/barcode', barcodeRouter)
 router.use('/tag', priceTagRouter)
 router.use('/brand', brandRouter)
 router.use('/site', siteRouter)
+router.use('/invoice', invoiceRouter)
 
 module.exports = router

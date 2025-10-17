@@ -162,6 +162,19 @@ const ManufacturersRemote = sequelize.define('manufacturersRemote', {
     }
 )
 
+
+const SuppliersRemote = sequelize.define('suppliersRemote', {
+        'Код товара': {type: DataTypes.INTEGER, primaryKey: true},
+        Поставщик: {type: DataTypes.STRING},
+    }, {
+        timestamps: false,
+        freezeTableName: true,
+        tableName: `Поставщики`,
+        charset: 'utf8',
+        collate: 'utf8_unicode_ci'
+    }
+)
+
 const SellsRemote = sequelize.define('sellsRemote', {
         Счетчик: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
         "№ реализации": {type: DataTypes.INTEGER},
@@ -180,6 +193,27 @@ const SellsRemote = sequelize.define('sellsRemote', {
         timestamps: false,
         freezeTableName: true,
         tableName: `Реализации`,
+        charset: 'utf8',
+        collate: 'utf8_unicode_ci'
+    }
+)
+
+const InvoicesRemote = sequelize.define('invoicesRemote', {
+        Счетчик: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+        "Поставщик": {type: DataTypes.STRING},
+        Дата: {type: DataTypes.DATEONLY},
+        "Номер счета": {type: DataTypes.STRING},
+        "Артикул поставщика": {type: DataTypes.STRING},
+        "Код": {type: DataTypes.INTEGER},
+        Цена: {type: DataTypes.FLOAT},
+        Количество: {type: DataTypes.INTEGER},
+        Наименование: {type: DataTypes.STRING},
+        Сумма: {type: DataTypes.FLOAT},
+        Проведен: {type: DataTypes.BOOLEAN, default: false}
+    }, {
+        timestamps: false,
+        freezeTableName: true,
+        tableName: `Приходы`,
         charset: 'utf8',
         collate: 'utf8_unicode_ci'
     }
@@ -246,6 +280,8 @@ const ExtraProductsLogsRemote = sequelize.define('extraProductsLogsRemote', {
 ProductRemote.hasMany(BarcodeRemote, {foreignKey: 'Код'})
 BarcodeRemote.belongsTo(ProductRemote, {foreignKey: 'Код'})
 
+ProductRemote.hasMany(InvoicesRemote, {foreignKey: 'Код'})
+InvoicesRemote.belongsTo(ProductRemote, {foreignKey: 'Код'})
 
 ProductRemote.hasMany(CategoryProductRemote, {foreignKey: 'код_товара', foreignKeyConstraint: true})
 CategoryProductRemote.belongsTo(ProductRemote, {foreignKey: 'код_товара'})
@@ -279,6 +315,10 @@ CustomersRemote.hasMany(SellsCounterRemote, {foreignKey: "userId"})
 
 ExtraProductsLogsRemote.belongsTo(ProductRemote, {foreignKey: "productId"})
 ProductRemote.hasMany(ExtraProductsLogsRemote, {foreignKey: "productId"})
+
+SuppliersRemote.belongsTo(ProductRemote, {foreignKey: 'Код товара'})
+ProductRemote.hasOne(SuppliersRemote, {foreignKey: 'Код товара', foreignKeyConstraint: true})
+
 module.exports = {
     ProductRemote,
     OrderRemote,
@@ -293,5 +333,7 @@ module.exports = {
     BarcodeRemote,
     PriceTagRemote,
     DeliveryRemote,
-    ExtraProductsLogsRemote
+    ExtraProductsLogsRemote,
+    SuppliersRemote,
+    InvoicesRemote
 }

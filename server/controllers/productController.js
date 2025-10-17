@@ -205,6 +205,20 @@ class ProductController {
 
     }
 
+    async getProuctSKUList (req, res) {
+        const SKUList = await ProductRemote.findAll({where: {'Артикул поставщика': {[Op.not]: null}}, attributes: [['Артикул поставщика', 'SKU'], 'Код'], order: [['Артикул поставщика', 'ASC']]})
+        return res.json(SKUList)
+    }
+
+    async updateProductPrice (req, res) {
+        const {id, price} = req.body
+        const product = await ProductRemote.findOne({where: {Код: id}})
+        if(!product) return res.badRequest("No product was found")
+        if(!price) return res.badRequest("No price in request")
+        await product.update({Цена: price})
+        return res.json("Успешно обновлено")
+    }
+
 
 }
 

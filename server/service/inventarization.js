@@ -1,4 +1,4 @@
-const {ProductRemote, CategoryProductRemote} = require("../models/modelsRemote");
+const {ProductRemote, CategoryProductRemote} = require("../models/models");
 const {Op} = require("sequelize");
 const fs = require("fs");
 const date = new Date()
@@ -35,7 +35,7 @@ async function inventProducts() {
 
     const sortedProducts = [...productsToBeSorted].sort((a, b) => a?.category?.toLowerCase().localeCompare(b?.category?.toLowerCase()))
     const header = 'Название~Код~Кол\n'
-    fs.unlinkSync(`./static/inventarization ${currentDate}.csv`    )
+    // fs.unlinkSync(`./static/inventarization ${currentDate}.csv`    )
     fs.appendFileSync(`./static/inventarization ${currentDate}.csv`, header)
     sortedProducts.forEach(product => {
         const title = product.parent?.Наименование ? `${product.parent?.Наименование}, ${product.parent['Наименование (крат опис)']}, ${product.Наименование}`
@@ -45,6 +45,7 @@ async function inventProducts() {
             fs.appendFileSync(`./static/inventarization ${currentDate}.csv`, data)
         }
     })
+    console.log('done')
 }
 
 module.exports = {

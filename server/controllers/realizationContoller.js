@@ -118,7 +118,7 @@ class RealizationContoller {
             let {date} = req.body
             if (!date || date?.length<0){
                 date = (new Date)
-                date = date.setHours(date.getHours() + 3)
+                // date = date.setHours(date.getHours() + 3)
 
             }
             console.log(date)

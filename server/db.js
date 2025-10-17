@@ -9,6 +9,7 @@ module.exports = new Sequelize(
 
     {
         dialect: "mysql",
+        logging: console.log,
         host: process.env.DB_REMOTE_HOST,
         port: process.env.DB_REMOTE_PORT,
         define: {

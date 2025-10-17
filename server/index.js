@@ -8,7 +8,7 @@ const path = require("path");
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 const cookieParser = require('cookie-parser')
 const {update} = require('./service/weight-product-updater')
-const axios = require('axios');
+
 
 
 
@@ -48,6 +48,7 @@ const start = async () => {
     try{
         await sequelize.authenticate()
         await sequelize.sync()
+
 
         app.listen(port, () => console.log(`Server's started on port: ${port}`))
     } catch (e) {
