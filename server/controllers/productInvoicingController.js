@@ -2,6 +2,7 @@ const {Sequelize, literal, Op} = require("sequelize");
 const {InvoicesRemote, ProductRemote, BarcodeRemote, PriceTagRemote} = require("../models/models");
 const ApiError = require("../error/ApiError");
 const {logger} = require("sequelize/lib/utils/logger");
+const {update} = require('./service/weight-product-updater')
 
 class ProductInvoicingController {
     async getInvoice(req, res) {
@@ -215,7 +216,11 @@ class ProductInvoicingController {
             for (const invoiceItem of invoiceItems) {
                 if(!invoiceItem.Проведен){
                     const product = await ProductRemote.findOne({where: {Код: invoiceItem.Код}})
-                    const avgCost = ((invoiceItem.Цена*invoiceItem.Количество)+(product['Средний закуп']*(product.product_in_stock+product?.product_in_stock_OM)))/(invoiceItem.Количество+product?.product_in_stock+product?.product_in_stock_OM)
+                    let product_in_stock = product.product_in_stock+product?.product_in_stock_OM
+                    if (product_in_stock<0) product_in_stock = 0
+                    let prevAvgCost = product['Средний закуп']
+                    if (!prevAvgCost) prevAvgCost = 0
+                    const avgCost = ((invoiceItem.Цена*invoiceItem.Количество)+(prevAvgCost*(product_in_stock)))/(invoiceItem.Количество+product_in_stock)
                     const totalQTY = invoiceItem.Количество + product?.product_in_stock
                     await product.update({product_in_stock: totalQTY, 'Средний закуп': avgCost, 'Закуп последний': invoiceItem.Цена})
                     await invoiceItem.update({Проведен: true})
@@ -225,6 +230,7 @@ class ProductInvoicingController {
                 }
 
         }
+            await update(1)
             return res.json('Успешно обновлено')
         } catch (e) {
             console.warn(e)
