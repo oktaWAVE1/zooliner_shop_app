@@ -2,7 +2,7 @@ const {Sequelize, literal, Op} = require("sequelize");
 const {InvoicesRemote, ProductRemote, BarcodeRemote, PriceTagRemote} = require("../models/models");
 const ApiError = require("../error/ApiError");
 const {logger} = require("sequelize/lib/utils/logger");
-const {update} = require('./service/weight-product-updater')
+const {update} = require('../service/weight-product-updater')
 
 class ProductInvoicingController {
     async getInvoice(req, res) {
