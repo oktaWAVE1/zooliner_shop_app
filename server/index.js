@@ -32,12 +32,7 @@ app.use(express.static(path.resolve(__dirname, 'static')))
 app.use('/api', router)
 
 
-const lifeposCorsOptions = {
-    origin: 'https://api.life-pos.ru',
-    methods: ['POST'],
-    optionsSuccessStatus: 200
-};
-app.post('/api/realization/lifepos', cors(lifeposCorsOptions))
+
 
 app.use(errorHandler)
 
@@ -50,7 +45,8 @@ const start = async () => {
         await sequelize.sync()
 
 
-        app.listen(port, () => console.log(`Server's started on port: ${port}`))
+        const server = app.listen(port, () => console.log(`Server started on port ${port}`))
+        server.maxConnections = 50;
     } catch (e) {
         console.log(e)
     }

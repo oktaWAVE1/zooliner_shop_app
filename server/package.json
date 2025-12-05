@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "production": "node index.js"
+    "zooliner_shop_prod": "node index.js"
   },
   "keywords": [],
   "author": "",
